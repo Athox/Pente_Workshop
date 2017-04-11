@@ -1,16 +1,16 @@
-if (("4 pions alignés") && ("au moins 1 case libre à côté")) {
+if (("4 pions alignés") && ("au moins 1 case libre à côté")) { 0
     "placer un pion";
 }
 
-else if (("paire adverse") && ("4 tenailles faites") && ("1 pion à côté")) {
+else if (("paire adverse") && ("4 tenailles faites") && ("1 pion à côté")) { 0
     "placer un pion de l'autre côté";
 }
 
-else if ("au moins 3 pions adverses alignés") {
+else if ("au moins 3 pions adverses alignés") { 1
     "placer un pion";
 }
 
-else if ("paire adverse") {
+else if ("paire adverse") { 
     if ("1 pion à côté") {
         "placer un pion de l'autre côté";
     } else {

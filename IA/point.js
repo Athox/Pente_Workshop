@@ -2,19 +2,92 @@ class Point {
     constructor (l, c, value) {
         this.line = l;
         this.column = c;
-        this.calue = value;
+        this.value = value;
+        this.empty = [];
     }
     setValue (value) {
         this.value = value;
     }
-    getRightNeighbors (l, c, tab) {
+    checkIfEmpty (dir) {
+        var response = [];
+        switch (dir) {
+          case "right":
+            if (this.empty.indexOf("left")) {
+              response.push(this.line);
+              response.push(this.column - 1);
+              return response;
+            } else {
+              return false;
+            }
+          case "left":
+            if (this.empty.indexOf("right")) {
+              response.push(this.line);
+              response.push(this.column + 1);
+              return response;
+            } else {
+              return false;
+            }
+          case "up":
+            if (this.empty.indexOf("down")) {
+              response.push(this.line + 1);
+              response.push(this.column);
+              return response;
+            } else {
+              return false;
+            }
+          case "down":
+            if (this.empty.indexOf("up")) {
+              response.push(this.line - 1);
+              response.push(this.column);
+              return response;
+            } else {
+              return false;
+            }
+          case "upRight":
+            if (this.empty.indexOf("downLeft")) {
+              response.push(this.line - 1);
+              response.push(this.column + 1);
+              return response;
+            } else {
+              return false;
+            }
+          case "upLeft":
+            if (this.empty.indexOf("downRight")) {
+              response.push(this.line - 1);
+              response.push(this.column - 1);
+              return response;
+            } else {
+              return false;
+            }
+          case "downRight":
+            if (this.empty.indexOf("upLeft")) {
+              response.push(this.line + 1);
+              response.push(this.column + 1);
+              return response;
+            } else {
+              return false;
+            }
+          case "downLeft":
+            if (this.empty.indexOf("upRight")) {
+              response.push(this.line + 1);
+              response.push(this.column - 1);
+              return response;
+            } else {
+              return false;
+            }
+        }
+    }
+    getRightNeighbors (tab) {
         //var side = tab[l][c];
         nb_neighbors = 0;
-        for (var i = 1; i < 5; i++) {
+        for (var i = 1; i < 4; i++) {
             try {
-              if (tab[l][c+i] == this.value) {
+              if (tab[this.line][this.column+i] == this.value) {
                   nb_neighbors++;
                   continue;
+              } else if (tab[this.line][this.column+i] == 0) {
+                  this.empty.push("right");
+                  break;
               } else {
                   break;
               }
@@ -24,14 +97,17 @@ class Point {
         }
         this.rightNeighbors = nb_neighbors;
     }
-    getLeftNeighbors (l, c, tab) {
+    getLeftNeighbors (tab) {
         //var side = tab[l][c];
         nb_neighbors = 0;
-        for (var i = 1; i < 5; i++) {
+        for (var i = 1; i < 4; i++) {
             try {
-                if (tab[l][c-i] == this.value) {
+                if (tab[this.line][this.column-i] == this.value) {
                     nb_neighbors++;
                     continue;
+                } else if (tab[this.line][this.column-i] == 0) {
+                    this.empty.push("left");
+                    break;
                 } else {
                     break;
                 }
@@ -42,14 +118,17 @@ class Point {
         }
         this.leftNeighbors = nb_neighbors;
     }
-    getUpNeighbors (l, c, tab) {
+    getUpNeighbors (tab) {
         //var side = tab[l][c];
         nb_neighbors = 0;
-        for (var i = 1; i < 5; i++) {
+        for (var i = 1; i < 4; i++) {
             try {
-              if (tab[l-i][c] == this.value) {
+              if (tab[this.line-i][this.column] == this.value) {
                   nb_neighbors++;
                   continue;
+              } else if (tab[this.line-i][this.column] == 0) {
+                  this.empty.push("up");
+                  break;
               } else {
                   break;
               }
@@ -59,14 +138,17 @@ class Point {
         }
         this.upNeighbors = nb_neighbors;
     }
-    getDownNeighbors (l, c, tab) {
+    getDownNeighbors (tab) {
         //var side = tab[l][c];
         nb_neighbors = 0;
-        for (var i = 1; i < 5; i++) {
+        for (var i = 1; i < 4; i++) {
             try {
-              if (tab[l+i][c] == this.value) {
+              if (tab[this.line+i][this.column] == this.value) {
                   nb_neighbors++;
                   continue;
+              } else if (tab[this.line-i][this.column] == 0) {
+                  this.empty.push("down");
+                  break;
               } else {
                   break;
               }
@@ -76,14 +158,17 @@ class Point {
         }
         this.downNeighbors = nb_neighbors;
     }
-    getUpRightNeighbors (l, c, tab) {
+    getUpRightNeighbors (tab) {
         //var side = tab[l][c];
         nb_neighbors = 0;
-        for (var i = 1; i < 5; i++) {
+        for (var i = 1; i < 4; i++) {
           try {
-            if (tab[l-i][c+i] == this.value) {
+            if (tab[this.line-i][this.column+i] == this.value) {
                 nb_neighbors++;
                 continue;
+            } else if (tab[this.line-i][this.column+i] == 0) {
+                this.empty.push("upRight");
+                break;
             } else {
                 break;
             }
@@ -93,14 +178,17 @@ class Point {
         }
         this.upRighNeighbors = nb_neighbors;
     }
-    getUpLeftNeighbors (l, c, tab) {
+    getUpLeftNeighbors (tab) {
         //var side = tab[l][c];
         nb_neighbors = 0;
-        for (var i = 1; i < 5; i++) {
+        for (var i = 1; i < 4; i++) {
             try {
-              if (tab[l-i][c-i] == this.value) {
+              if (tab[this.line-i][this.column-i] == this.value) {
                   nb_neighbors++;
                   continue;
+              } else if (tab[this.line][this.column+i] == 0) {
+                  this.empty.push("upLeft");
+                  break;
               } else {
                   break;
               }
@@ -110,14 +198,17 @@ class Point {
         }
         this.upLeftNeighbors = nb_neighbors;
     }
-    getDownLeftNeighbors (l, c, tab) {
+    getDownLeftNeighbors (tab) {
         //var side = tab[l][c];
         nb_neighbors = 0;
-        for (var i = 1; i < 5; i++) {
+        for (var i = 1; i < 4; i++) {
             try {
-              if (tab[l+i][c-i] == this.value) {
+              if (tab[this.line+i][this.column-i] == this.value) {
                   nb_neighbors++;
                   continue;
+              } else if (tab[this.line][this.column+i] == 0) {
+                  this.empty.push("downLeft");
+                  break;
               } else {
                   break;
               }
@@ -127,14 +218,17 @@ class Point {
         }
         this.downLeftNeighbors = nb_neighbors;
     }
-    getDownRightNeighbors (l, c, tab) {
+    getDownRightNeighbors (tab) {
         //var side = tab[l][c];
         nb_neighbors = 0;
-        for (var i = 1; i < 5; i++) {
+        for (var i = 1; i < 4; i++) {
             try {
-              if (tab[l+i][c+i] == this.value) {
+              if (tab[this.line+i][this.column+i] == this.value) {
                   nb_neighbors++;
                   continue;
+              } else if (tab[this.line][this.column+i] == 0) {
+                  this.empty.push("downRight");
+                  break;
               } else {
                   break;
               }
@@ -144,20 +238,40 @@ class Point {
         }
         this.downRightNeighbors = nb_neighbors;
     }
-    getMaxNeighbors () {
-        var neighbors = [];
-        neighbors.push(this.rightNeighbors);
-        neighbors.push(this.leftNeighbors);
-        neighbors.push(this.upNeighbors);
-        neighbors.push(this.downNeighbors);
-        neighbors.push(this.upRighNeighbors);
-        neighbors.push(this.upLeftNeighbors);
-        neighbors.push(this.downRighNeighbors);
-        neighbors.push(this.downLeftNeighbors);
-        var max = Math.max(...neighbors);
+    getAllNeighbors (tab) {
+        getRightNeighbors(tab);
+        getLeftNeighbors(tab);
+        getUpNeighbors(tab);
+        getDownNeighbors(tab);
+        getUpRightNeighbors(tab);
+        getUpLeftNeighbors(tab);
+        getDownLeftNeighbors(tab);
+        getDownRightNeighbors(tab);
+        var neighbors = {};
+        neighbors["right"] = this.rightNeighbors;
+        neighbors["left"] = this.leftNeighbors;
+        neighbors["up"] = this.upNeighbors;
+        neighbors["down"] = this.downNeighbors;
+        neighbors["upRight"] = this.upRighNeighbors;
+        neighbors["upLeft"] = this.upLeftNeighbors;
+        neighbors["downRight"] = this.downRighNeighbors;
+        neighbors["downLeft"] = this.downLeftNeighbors;
+        return neighbors;
+    }
+    getMaxNeighbor (neighbors) {
+        var values = [];
+        values.push(neighbors["right"]);
+        values.push(neighbors["left"]);
+        values.push(neighbors["up"]);
+        values.push(neighbors["down"]);
+        values.push(neighbors["upRight"]);
+        values.push(neighbors["upLeft"]);
+        values.push(neighbors["downRight"]);
+        values.push(neighbors["downLeft"]);
+        var max = Math.max(...values);
         var dir;
-        for (var i in neighbors) {
-          if (neighbors[i] == max) {
+        for (var i in values) {
+          if (values[i] == max) {
             switch (i) {
               case 0:
                 dir = "right";
