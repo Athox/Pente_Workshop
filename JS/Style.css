@@ -153,9 +153,9 @@ text-align: center;
   position: relative;
 
 }
-#gamemode
+.radio
 {
-  float: right;
+  padding-right: 15px;
 
 }
 button:hover {
@@ -167,6 +167,21 @@ button:hover {
   stroke:#222;
   opacity:0;
 }
+
+.pointj1
+{
+  fill:#013A6B;
+  stroke:#222;
+  opacity:0;
+}
+
+.pointj2
+{
+  fill:#c1ad17;
+  stroke:#222;
+  opacity:0;
+}
+
 .point:hover
 {
   opacity: 0.25;
