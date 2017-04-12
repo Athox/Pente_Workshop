@@ -270,6 +270,13 @@ $(document).ready(function () {
           console.log(CODE);
           console.log("Start thread Turn");
 
+          callServerTurn(function(ret){
+                console.log("callServerTurn code -> " + CODE)
+
+                  updateHeader();
+                  updateTable();
+              });
+
           ID_THREAD = setInterval(runThread(), 1000);
         });
 
