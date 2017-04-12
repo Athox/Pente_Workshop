@@ -192,7 +192,7 @@ class IA {
       priorityList["4"] = []; // Entamer ligne (2), entamer ligne (3)
       for (var l in this.subSection) {
         for (var c of this.subSection[l]) {
-          if (typeof(this.subSection[l][c] == "object")) {
+          if (typeof(this.subSection[l][c]) == "object") {
             var neighbors = this.subSection[l][c].getAllNeighbors(this.tab);
             for (var dir in neighbors) {
               var toPlay = this.subSection[l][c].checkIfEmpty(dir);
