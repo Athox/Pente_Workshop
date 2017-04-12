@@ -42,7 +42,7 @@ function runThread(){
       if(STATUS == 1){
         updateHeader();
         updateTable();
-        
+
       }else{
         ID_THREAD = setInterval(runThread(), 1000);
       }
@@ -178,15 +178,19 @@ function updateTable(){
 
       var val = tab[x][y];
       var id  = x + ";" + y;
+      var elem = document.getElementById(id);
 
       switch (val) {
         case 1:
-          $(id).css('opacity', '1');
-          $(id).css('fill', COLOR_PION_J1);
+          //$(id).css('opacity', '1');
+          //$(id).css('fill', COLOR_PION_J1);
+
+          $(elem).css('opacity', '1');
+          $(elem).css('fill', COLOR_PION_J1);
           break;
         case 2:
-          $(id).css('opacity', '1');
-          $(id).css('fill', COLOR_PION_J2);
+        $(elem).css('opacity', '1');
+        $(elem).css('fill', COLOR_PION_J2);
           break;
         default:
           // Do nothing
@@ -219,7 +223,7 @@ $(document).ready(function () {
       if(CODE == "200"){
         console.log("Player is connected to server");
 
-        document.getElementById("namej1").innerHTML = PLAYER_NAME;
+        updateHeader();
 
         // TODO -> Start IA
 
@@ -243,8 +247,10 @@ $(document).ready(function () {
 
   $(".point").bind("click", function (evt){
 
-    if(HUMAN_VS_IA){
+    //if(HUMAN_VS_IA){
 
+    // If status value is not 1, then it's not your turn to play
+    if(STATUS == 1){
       $(this).css('opacity', '1');
 
       if(PLAYER_NUM == 1){
@@ -254,12 +260,11 @@ $(document).ready(function () {
       }
 
 
-      // If status value is not 1, then it's not your turn to play
-      if(STATUS == 1){
-        var id = $(this).attr("id").value;
 
-        var x = $(this).attr("x").value;
-        var y = $(this).attr("y").value;
+        var id = $(this).attr("id");
+
+        var x = $(this).attr("x");
+        var y = $(this).attr("y");
 
         callServerPlay(x, y, function(val){
           console.log(CODE);
@@ -269,7 +274,7 @@ $(document).ready(function () {
         });
 
       }
-    }
+    //}
 
   });
 
