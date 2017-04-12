@@ -24,3 +24,7 @@ var DETAIL_FIN_PARTIE = ""
 
 
 var ID_THREAD         = 0;
+
+
+var COLOR_J1          = "#000000";
+var COLOR_J2          = "#FFFFFF";
