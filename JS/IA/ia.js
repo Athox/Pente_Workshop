@@ -1,13 +1,19 @@
 class IA {
-  constructor (tab, idJoueur, numJoueur) {
-    this.tab = tab;
-    this.ptTab = tab;
+  constructor (idJoueur, numJoueur) {
+    this.tab = [];
+    this.ptTab = [];
     this.idJoueur = idJoueur;
     this.numJoueur = numJoueur;
     this.nbTenailles = 0;
   }
   setTab (tab) {
+    if (this.tab.length == 0) {
+      var first = true;
+    }
     this.tab = tab;
+    if (first == true) {
+      this.ptTab = tab;
+    }
   }
   handleTenailles (tableau) {
     if (this.tab[dernierCoupX][dernierCoupY+1] != tableau[dernierCoupX][dernierCoupY+1]) {
@@ -96,11 +102,11 @@ class IA {
       }
     }
     if ((dernierCoupX >= 4) && (dernierCoupX < 13)) {
-      section = section.slice(dernierCoupX - 4, dernierCoupX + 5)); //limite externe non incluse
+      section = section.slice(dernierCoupX - 4, dernierCoupX + 5); //limite externe non incluse
     } else if (dernierCoupX < 4) {
-      section = section.slice(dernierCoupX, dernierCoupX + 5)); //limite externe non incluse
+      section = section.slice(dernierCoupX, dernierCoupX + 5); //limite externe non incluse
     } else if (dernierCoupX >= 13) {
-      section = section.slice(dernierCoupX - 4, dernierCoupX)); //limite externe non incluse
+      section = section.slice(dernierCoupX - 4, dernierCoupX); //limite externe non incluse
     }
     this.subSection = section;
   }

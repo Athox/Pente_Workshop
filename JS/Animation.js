@@ -29,7 +29,7 @@ function checkServer(srv, player, gameMode, cb_func){
 
            },
            error: function (x, y, z) {
-              console.log(x.responseText + "  " + x.status)
+              console.log(x.responseText + "  " + x.status);
            }
        });
   }
@@ -146,7 +146,7 @@ function checkCodeFromPlay(){
 // IA --------------------------------------------------------------------------
 function playIA(x, y){
   THE_IA.setTab(TABLEAU);
-  var toPlay = THE_IA.play(DERNIER_COUP_X, DERNIER_COUP_Y, TABLEAU, NB_TENAILLE_J1, NB_TENAILLE_J2, TURN_CPT)
+  var toPlay = THE_IA.play(DERNIER_COUP_X, DERNIER_COUP_Y, TABLEAU, NB_TENAILLE_J1, NB_TENAILLE_J2, TURN_CPT);
   callServerPlay(toPlay[0], toPlay[1], function (ret){
     console.log("callServerPlay : " + CODE);
   });
