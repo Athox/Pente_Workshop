@@ -25,6 +25,8 @@ var DETAIL_FIN_PARTIE = ""
 
 var ID_THREAD         = 0;
 
+var HUMAN_VS_IA       = false;
 
-var COLOR_J1          = "#000000";
-var COLOR_J2          = "#FFFFFF";
+
+var COLOR_PION_J1     = "#013A6B";
+var COLOR_PION_J2     = "#c1ad17";

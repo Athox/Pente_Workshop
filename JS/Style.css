@@ -147,3 +147,27 @@ text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #af0303, 0 0 30px #af0303, 0 
 text-align: center;
 
 }
+.logo
+{
+  display: inline-block;
+  position: relative;
+
+}
+#gamemode
+{
+  float: right;
+
+}
+button:hover {
+    background-color: #34a388;
+
+}
+.point{
+  fill:black;
+  stroke:#222;
+  opacity:0;
+}
+.point:hover
+{
+  opacity: 0.25;
+}
