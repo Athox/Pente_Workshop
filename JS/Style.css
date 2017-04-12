@@ -79,31 +79,32 @@ text-align: center;
 
 
 }
-.player1
+.tabscore
 {
-   background: #222;
-    background-image: -webkit-linear-gradient(30deg, #013A6B 25%, #222 25%);
-
+  background: #222;
 
      box-shadow: 10px 10px 15px #888888;
-  border-right:  8px solid #43D1AF;
-
   padding-top: 5px;
 
   padding-bottom: 25px;
+}
+.tabscore.active
+{
+    border-right:  8px solid #43D1AF;
+}
+.player1
+{
+
+    background-image: -webkit-linear-gradient(30deg, #013A6B 25%, #222 25%);
 
 
 
 }
 .player2
 {
-  background: #222;
   background-image: -webkit-linear-gradient(30deg, #c1ad17 25%, #222 25%);
-  border-right:  8px solid #43D1AF;
-   box-shadow: 10px 10px 15px #888888;
+
   margin-top: 5px;
-padding-top: 5px;
-  padding-bottom: 25px;
 
 }
 #score1
@@ -173,14 +174,14 @@ button:hover {
 {
   fill:#013A6B;
   stroke:#222;
-  opacity:0;
+  opacity:1;
 }
 
 .pointj2
 {
   fill:#c1ad17;
   stroke:#222;
-  opacity:0;
+  opacity:1;
 }
 
 .point:hover
