@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <!--
       Notice the use of %PUBLIC_URL% in the tag above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -13,358 +12,59 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+
+    <title>Pente game</title>
+
+    <!-- Default JS -->
   <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="jquery-2.1.1.js" type="text/javascript" ></script>
+
+  <!-- Custom JS -->
+  <script src="Animation.js"    type="text/javascript" ></script>
+  <script src="Grid.js"         type="text/javascript" ></script>
+
+  <!-- Style sheets -->
+  <link href="bootstrap.css"    rel="stylesheet" type="text/css" />
+  <link href="Style.css"        rel="stylesheet" type="text/css" />
+
 </head>
-<style type="text/css">
-body
-{
-  background: #e2e2e2;
-}
-.addr 
-{
-  background: #222;
-  color: white;
 
-  padding: 20px;
- margin-bottom: 15px;
- text-align: center;
-
-}
-label
-{
-  border-top: 2px solid #43D1AF;
-  border-left: 2px solid #43D1AF;
-  border-bottom: 2px solid #43D1AF;
-  padding-left: 10px;
-  padding-right: 10px;
-  display:inline-block;
-    white-space:nowrap;
-
-}
-input
-{
-  margin-right: 20px;
-
-}
-button
-{
-    width: 10%;
-    height: 32px;
-    background: #43D1AF;
-    border-bottom: 2px solid #30C29E;
-    border-top-style: none;
-    border-right-style: none;
-    border-left-style: none;    
-    color: #fff;
-
-}
-#grid
-{
-  text-align: center;
-}
-.score-board
-{
-  position: absolute;
- 
-  width: 250px;
-  height: 450px;
-  text-align: center;
-
-}
-
-.player1 h4
-{
-
-
-font-size: 25px;
-color: #fff;
-text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #43D1AF, 0 0 30px #43D1AF, 0 0 40px #43D1AF, 0 0 55px #43D1AF, 0 0 75px #43D1AF;
-text-align: center;
-}
-.player2 h4
-{
-  
-font-size: 25px;
-color: #fff;
-text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #43D1AF, 0 0 30px #43D1AF, 0 0 40px #43D1AF, 0 0 55px #43D1AF, 0 0 75px #43D1AF;
-text-align: center;
-
-  
-}
-.player1
-{
-   background: #222;
-    background-image: -webkit-linear-gradient(30deg, #013A6B 25%, #222 25%);
-
-
-     box-shadow: 10px 10px 15px #888888;
-  border-right:  8px solid #43D1AF;
-
-  padding-top: 5px;
-
-  padding-bottom: 25px;
-
-
-
-}
-.player2
-{
-  background: #222;
-  background-image: -webkit-linear-gradient(30deg, #c1ad17 25%, #222 25%);
-  border-right:  8px solid #43D1AF;
-   box-shadow: 10px 10px 15px #888888;
-  margin-top: 5px;
-padding-top: 5px;
-  padding-bottom: 25px;
-
-}
-#score1 
-{
-  
-font-size: 25px;
-color: #fff;
-text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #43D1AF, 0 0 30px #43D1AF, 0 0 40px #43D1AF, 0 0 55px #43D1AF, 0 0 75px #43D1AF;
-text-align: center;
-  
-}
-#score2
-{
-  
-font-size: 25px;
-color: #fff;
-text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #43D1AF, 0 0 30px #43D1AF, 0 0 40px #43D1AF, 0 0 55px #43D1AF, 0 0 75px #43D1AF;
-text-align: center;
-  
-}
-#turn
-{
-  
-font-size: 25px;
-color: #fff;
-text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #af0303, 0 0 30px #af0303, 0 0 40px #af0303, 0 0 55px #af0303, 0 0 75px #af0303;
-text-align: center;
-   box-shadow: 10px 10px 15px #888888;
-border-right:  8px solid #af0303;
-background: #222;
-  margin-top: 5px;
-padding-top: 5px;
-  padding-bottom: 25px;
-  
-}
-#cptturn
-{
-  
-font-size: 25px;
-color: #fff;
-text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #af0303, 0 0 30px #af0303, 0 0 40px #af0303, 0 0 55px #af0303, 0 0 75px #af0303;
-text-align: center;
-  
-}
-.logo
-{
-  display: inline-block;
-  position: relative;
-
-}
-#gamemode
-{
-  float: right;
-  
-}
-button:hover { 
-    background-color: #34a388;
-    
-}
-</style>
 <body>
-  <div id="root"></div>
-  
+
 <div class="addr">
-  <div class="logo"><img  src="logo.png"></div>
-  
-  <div>
-  <label>Adresse serveur</label>  
+  <label>Adresse serveur</label>
   <input id="srvadress">
-  <label>Nom du joueur</label>  
+  <label>Nom du joueur</label>
   <input id="playername">
   <button id="validate">Valider</button>
-  <button id="gamemode">Game mode</button>
-  </div>
-
 </div>
 
 <div class="score-board">
 
   <div class="player1">
-    <h4 id="namej1">Player 1</h4>
+    <h4 id="namej1">Joueur 1</h4>
     <div id="score1">
-      15
-    </div>    
+      0
+    </div>
   </div>
 
   <div class="player2">
-    <h4 id="namej2">Player 2</h4>
+    <h4 id="namej2">Joueur 2</h4>
     <div id="score2">
-      10
+      0
     </div>
   </div>
 
   <div id="turn">
     <h4 >Tour</h4>
     <div id="cptturn">
-      10
+      0
     </div>
   </div>
 </div>
 
 <div id="grid"></div>
 <button onclick=addPion(1,2,2)>add point</button>
-<script type="text/javascript">
 
-function gridData() {
-  var data = new Array();
-  var xpos = 1; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
-  var ypos = 1;
-  var width = 32;
-  var height = 32;
-  var click = 0;
-  
-  // iterate for rows 
-  for (var row = 0; row < 18; row++) {
-    data.push( new Array() );
-    
-    // iterate for cells/columns inside rows
-    for (var column = 0; column < 18; column++) {
-      data[row].push({
-        x: xpos,
-        y: ypos,
-        width: width,
-        height: height,
-        click: click
-      })
-      // increment the x position. I.e. move it over by 50 (width variable)
-      xpos += width;
-    }
-    // reset the x position after a row is complete
-    xpos = 1;
-    // increment the y position for the next row. Move it down 50 (height variable)
-    ypos += height; 
-  }
-  return data;
-}
-
-
-
-var gridData = gridData();  
-// I like to log the data to the console for quick debugging
-console.log(gridData);
-
-var grid = d3.select("#grid")
-  .append("svg")
-  .attr("width","700px")
-  .attr("height","700px");
-  
-var row = grid.selectAll(".row")
-  .data(gridData)
-  .enter().append("g")
-  .attr("class", "row");
-  
-var column = row.selectAll(".square")
-  .data(function(d) { return d; })
-  .enter().append("rect")
-  .attr("class","square")
-  .attr("x", function(d) { return d.x; })
-  .attr("y", function(d) { return d.y; })
-  .attr("width", function(d) { return d.width; })
-  .attr("height", function(d) { return d.height; })
-  .style("fill", "#e2e2e2")
-  .style("stroke", "#222")
-
-function pointData() {
-  var data = new Array();
-  var xpos = 1; //starting xpos and ypos at 1 so the stroke will show when we make the grid below
-  var ypos = 1;
-  var x=0;
-  var y=0;
-  var width = 32;
-  var height = 32;
-  var click = 0;
-  
-  // iterate for rows 
-  for (var row = 0; row < 19; row++) {
-    data.push( new Array() );
-    
-    // iterate for cells/columns inside rows
-    for (var column = 0; column < 19; column++) {
-      data[row].push({
-        x: xpos,
-        y: ypos,
-        lx:row,
-        ly:column,
-        width: width,
-        height: height,
-        click: click
-      })
-      // increment the x position. I.e. move it over by 50 (width variable)
-      xpos += width;
-    }
-    // reset the x position after a row is complete
-    xpos = 1;
-    // increment the y position for the next row. Move it down 50 (height variable)
-    ypos += height; 
-  }
-  return data;
-}
-
-
-
-
-var pion = grid.selectAll(".pion")
-  .data(pointData)
-  .enter().append("g")
-  .attr("class", "pion");
- 
-  var column2 = pion.selectAll(".point")
-  .data(function(d) { return d; })
-  .enter().append("circle")
-  .attr("class","point")
-  .attr("cx", function(d) { return d.x; })
-  .attr("cy", function(d) { return d.y; })
-  .attr("r",12)
-  .attr("x",function(d) { return d.lx; })
-  .attr("y",function(d) { return d.ly; })
-  .attr("id",function(d) { return d.lx+";"+d.ly; })
-  .attr("width", function(d) { return d.width; })
-  .attr("height", function(d) { return d.height; })
-  .style("fill", "black")
-  .style("stroke", "#222")
-  .style("opacity", "0")
-
-//x ligne y colonne
-function addPion(x,y,playerNumber)
-{
-  if (playerNumber==1)
-  {
- pion.select("[x='"+x+"'][y='"+y+"']")
-.style("opacity", "1")
-.style("fill", "#013A6B")
-  }
-  else if (playerNumber==2) 
-  {
-pion.select("[x='"+x+"'][y='"+y+"']")
-.style("opacity", "1")
-.style("fill", "#c1ad17") 
-  }
-}
-
-
-
-grid.style("padding-left", "15px")
-grid.style("padding-top", "15px")
-
-
-</script>
-</body>
   </body>
 </html>
