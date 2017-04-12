@@ -120,20 +120,20 @@ function checkCodeFromPlay(){
   var cons = "";
 
   switch(CODE){
-    case "200":
+    case 200:
       ret  = true;
       cons = "Play is validated";
       break;
 
-    case "401":
+    case 401:
       cons = "Player is unauhorized (player name not validate for the game)";
       break;
 
-    case "406":
+    case 406:
       cons = "Play is not validated";
       break;
 
-    case "503":
+    case 503:
       cons = "Server is unavailable";
       break;
   }
@@ -170,15 +170,33 @@ function updateHeader(){
   if(PLAYER_NUM == 1 )
   {
     document.getElementById("namej1").innerHTML  = PLAYER_NAME;
+
+    if(STATUS == 1){
+      $('.player1').addClass('active');
+      $('.player2').removeClass('active');
+    }else{
+      $('.player1').removeClass('active');
+      $('.player2').addClass('active');
+    }
   }
   else if (PLAYER_NUM == 2 ) {
     document.getElementById("namej2").innerHTML  = PLAYER_NAME;
+
+    if(STATUS == 1){
+      $('.player1').removeClass('active');
+      $('.player2').addClass('active');
+    }else{
+      $('.player1').addClass('active');
+      $('.player2').removeClass('active');
+    }
   }
 
   document.getElementById("score1").innerHTML  = NB_TENAILLE_J1;
   document.getElementById("score2").innerHTML  = NB_TENAILLE_J2;
 
   document.getElementById("cptturn").innerHTML = TURN_CPT;
+
+
 }
 
 function updateTable(){
@@ -281,8 +299,6 @@ $(document).ready(function () {
     // If status value is not 1, then it's not your turn to play
     if(STATUS == 1){
 
-
-
         var id = $(this).attr("id");
 
         var x = $(this).attr("x");
@@ -294,6 +310,7 @@ $(document).ready(function () {
 
           if(ret){
             updatePoint(this);
+
             callServerTurn(function(ret)
             {
                     updateHeader();
