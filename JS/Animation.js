@@ -120,20 +120,20 @@ function checkCodeFromPlay(){
   var cons = "";
 
   switch(CODE){
-    case "200":
+    case 200:
       ret  = true;
       cons = "Play is validated";
       break;
 
-    case "401":
+    case 401:
       cons = "Player is unauhorized (player name not validate for the game)";
       break;
 
-    case "406":
+    case 406:
       cons = "Play is not validated";
       break;
 
-    case "503":
+    case 503:
       cons = "Server is unavailable";
       break;
   }
@@ -205,13 +205,13 @@ function updateTable(){
 
 }
 
-function updatePoint(){
-  $(this).css('opacity', '1');
+function updatePoint(elem){
+  $(elem).css('opacity', '1');
 
   if(PLAYER_NUM == 1){
-    $(this).css('fill', COLOR_PION_J1);
+    $(elem).css('fill', COLOR_PION_J1);
   }else if (PLAYER_NUM == 2) {
-    $(this).css('fill', COLOR_PION_J2);
+    $(elem).css('fill', COLOR_PION_J2);
   }
 }
 
@@ -270,8 +270,6 @@ $(document).ready(function () {
     // If status value is not 1, then it's not your turn to play
     if(STATUS == 1){
 
-        updatePoint();
-
         var id = $(this).attr("id");
 
         var x = $(this).attr("x");
@@ -282,6 +280,8 @@ $(document).ready(function () {
           var ret = checkCodeFromPlay();
 
           if(ret){
+            updatePoint(this);
+
             callServerTurn(function(ret)
             {
                     updateHeader();
