@@ -146,7 +146,7 @@ class Point {
               if (tab[this.line+i][this.column] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line-i][this.column] == 0) {
+              } else if (tab[this.line+i][this.column] == 0) {
                   this.empty.push("down");
                   break;
               } else {
@@ -186,7 +186,7 @@ class Point {
               if (tab[this.line-i][this.column-i] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line][this.column+i] == 0) {
+              } else if (tab[this.line-i][this.column-i] == 0) {
                   this.empty.push("upLeft");
                   break;
               } else {
@@ -206,7 +206,7 @@ class Point {
               if (tab[this.line+i][this.column-i] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line][this.column+i] == 0) {
+              } else if (tab[this.line+i][this.column-i] == 0) {
                   this.empty.push("downLeft");
                   break;
               } else {
@@ -226,7 +226,7 @@ class Point {
               if (tab[this.line+i][this.column+i] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line][this.column+i] == 0) {
+              } else if (tab[this.line+i][this.column+i] == 0) {
                   this.empty.push("downRight");
                   break;
               } else {
