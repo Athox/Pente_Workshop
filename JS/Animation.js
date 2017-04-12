@@ -176,8 +176,6 @@ $(document).ready(function () {
     });
   });
 
-
-
   $(".point").bind("click", function (evt){
 
     // If status value is not 1, then it's not your turn to play
@@ -192,7 +190,6 @@ $(document).ready(function () {
       });
     }
   });
-
 
 
 });
