@@ -80,7 +80,9 @@ function callServerPlay(x, y, cb_func){
          type: "GET",
          success: function (data) {
 
-           CODE = data.code;
+           CODE   = data.code;
+
+           STATUS = 0;
 
            cb_func(ret);
 
@@ -173,5 +175,24 @@ $(document).ready(function () {
 
     });
   });
+
+
+
+  $(".point").bind("click", function (evt){
+
+    // If status value is not 1, then it's not your turn to play
+    if(STATUS == 1){
+      var id = $(this).attr("id").value;
+
+      var x = $(this).attr("x").value;
+      var y = $(this).attr("y").value;
+
+      callServerPlay(x, y, function(val){
+        $(this).css('opacity', '1');
+      });
+    }
+  });
+
+
 
 });

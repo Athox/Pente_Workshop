@@ -116,7 +116,7 @@ var pion = grid.selectAll(".pion")
   .attr("height", function(d) { return d.height; })
   .style("fill", "black")
   .style("stroke", "#222")
-  .style("visibility", "hidden")
+  .style("opacity", "0")
 
 //x ligne y colonne
 function addPion(x,y,playerNumber)
@@ -124,13 +124,13 @@ function addPion(x,y,playerNumber)
   if (playerNumber==1)
   {
  pion.select("[x='"+x+"'][y='"+y+"']")
-.style("visibility", "visible")
+.style("opacity", "1")
 .style("fill", "#013A6B")
   }
   else if (playerNumber==2)
   {
 pion.select("[x='"+x+"'][y='"+y+"']")
-.style("visibility", "visible")
+.style("opacity", "1")
 .style("fill", "#c1ad17")
   }
 }
