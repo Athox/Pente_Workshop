@@ -25,8 +25,10 @@ var DETAIL_FIN_PARTIE = ""
 
 var ID_THREAD         = 0;
 
-var HUMAN_VS_IA       = false;
+var GAME_MODE_HUM     = false;
 
 
 var COLOR_PION_J1     = "#013A6B";
 var COLOR_PION_J2     = "#c1ad17";
+
+var THE_IA            = null;

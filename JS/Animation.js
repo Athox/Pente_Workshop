@@ -1,5 +1,5 @@
 // SERVEUR ---------------------------------------------------------------------
-function checkServer(srv, player, cb_func){
+function checkServer(srv, player, gameMode, cb_func){
   var ret = "";
 
   if(srv.length == 0){
@@ -23,6 +23,8 @@ function checkServer(srv, player, cb_func){
               PLAYER_ID   = data.idJoueur;
               PLAYER_NUM  = data.numJoueur;
 
+              GAME_MODE_HUM = gameMode;
+
               cb_func(ret);
 
            },
@@ -42,7 +44,9 @@ function runThread(){
       if(STATUS == 1){
         updateHeader();
         updateTable();
-
+        if (GAME_MODE_HUM == false) {
+          playIA();
+        }
       }else{
         ID_THREAD = setInterval(runThread(), 1000);
       }
@@ -141,13 +145,10 @@ function checkCodeFromPlay(){
 
 // IA --------------------------------------------------------------------------
 function playIA(x, y){
-  callServerPlay(x, y, function (ret){
-    console.log("Tour finis");
-
-    if(checkServer()){
-      // TODO
-    }
-
+  THE_IA.setTab(TABLEAU);
+  var toPlay = THE_IA.play(DERNIER_COUP_X, DERNIER_COUP_Y, TABLEAU, NB_TENAILLE_J1, NB_TENAILLE_J2, TURN_CPT)
+  callServerPlay(toPlay[0], toPlay[1], function (ret){
+    console.log("callServerPlay : " + CODE);
   });
 }
 
@@ -209,8 +210,8 @@ $(document).ready(function () {
   $(document).on("click", "#validate", function (evt) {
     var srv  = document.getElementById("srvadress").value;
     var name = document.getElementById("playername").value;
-
-    checkServer(srv, name, function(val) {
+    var gameMode = document.getElementById("gamemode").value;
+    checkServer(srv, name, gameMode, function(val) {
       /*
       console.log("Adresse SRV -> " + ADRESSE_SRV);
       console.log("Player name -> " + PLAYER_NAME);
@@ -226,6 +227,9 @@ $(document).ready(function () {
         updateHeader();
 
         // TODO -> Start IA
+        if (GAME_MODE_HUM == false) {
+          THE_IA = new IA(PLAYER_ID, PLAYER_NUM);
+        }
 
         ID_THREAD = setInterval(runThread(), 1000);
 
@@ -247,7 +251,7 @@ $(document).ready(function () {
 
   $(".point").bind("click", function (evt){
 
-    //if(HUMAN_VS_IA){
+    if(GAME_MODE_HUM){
 
     // If status value is not 1, then it's not your turn to play
     if(STATUS == 1){
@@ -281,7 +285,7 @@ $(document).ready(function () {
         });
 
       }
-    //}
+    }
 
   });
 

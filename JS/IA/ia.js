@@ -1,19 +1,13 @@
 class IA {
-  constructor (idJoueur, numJoueur) {
-    this.tab = [];
-    this.ptTab = [];
+  constructor (tab, idJoueur, numJoueur) {
+    this.tab = tab;
+    this.ptTab = tab;
     this.idJoueur = idJoueur;
     this.numJoueur = numJoueur;
     this.nbTenailles = 0;
   }
   setTab (tab) {
-    if (this.tab.length == 0) {
-      var first = true;
-    }
     this.tab = tab;
-    if (first == true) {
-      this.ptTab = tab;
-    }
   }
   handleTenailles (tableau) {
     if (this.tab[dernierCoupX][dernierCoupY+1] != tableau[dernierCoupX][dernierCoupY+1]) {
