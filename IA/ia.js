@@ -9,8 +9,63 @@ class IA {
   setTab (tab) {
     this.tab = tab;
   }
-  setNbTenailles (nbTenailles) {
-    this.nbTenailles = nbTenailles;
+  handleTenailles (tableau) {
+    if (this.tab[dernierCoupX][dernierCoupY+1] != tableau[dernierCoupX][dernierCoupY+1]) {
+      if (this.tab[dernierCoupX][dernierCoupY+2] != tableau[dernierCoupX][dernierCoupY+2]) {
+        this.ptTab[dernierCoupX][dernierCoupY+1].setValue(0);
+        this.ptTab[dernierCoupX][dernierCoupY+2].setValue(0);
+        this.nbTenailles = nbTenailles + 1;
+      }
+    }
+    if (this.tab[dernierCoupX][dernierCoupY-1] != tableau[dernierCoupX][dernierCoupY-1]) {
+      if (this.tab[dernierCoupX][dernierCoupY-2] != tableau[dernierCoupX][dernierCoupY-2]) {
+        this.ptTab[dernierCoupX][dernierCoupY-1].setValue(0);
+        this.ptTab[dernierCoupX][dernierCoupY-2].setValue(0);
+        this.nbTenailles = nbTenailles + 1;
+      }
+    }
+    if (this.tab[dernierCoupX-1][dernierCoupY] != tableau[dernierCoupX-1][dernierCoupY]) {
+      if (this.tab[dernierCoupX-2][dernierCoupY] != tableau[dernierCoupX-2][dernierCoupY]) {
+        this.ptTab[dernierCoupX-1][dernierCoupY].setValue(0);
+        this.ptTab[dernierCoupX-2][dernierCoupY].setValue(0);
+        this.nbTenailles = nbTenailles + 1;
+      }
+    }
+    if (this.tab[dernierCoupX+1][dernierCoupY] != tableau[dernierCoupX+1][dernierCoupY]) {
+      if (this.tab[dernierCoupX+2][dernierCoupY] != tableau[dernierCoupX+2][dernierCoupY]) {
+        this.ptTab[dernierCoupX+1][dernierCoupY].setValue(0);
+        this.ptTab[dernierCoupX+2][dernierCoupY].setValue(0);
+        this.nbTenailles = nbTenailles + 1;
+      }
+    }
+    if (this.tab[dernierCoupX-1][dernierCoupY+1] != tableau[dernierCoupX-1][dernierCoupY+1]) {
+      if (this.tab[dernierCoupX-2][dernierCoupY+2] != tableau[dernierCoupX-2][dernierCoupY+2]) {
+        this.ptTab[dernierCoupX-1][dernierCoupY+1].setValue(0);
+        this.ptTab[dernierCoupX-2][dernierCoupY+2].setValue(0);
+        this.nbTenailles = nbTenailles + 1;
+      }
+    }
+    if (this.tab[dernierCoupX-1][dernierCoupY-1] != tableau[dernierCoupX-1][dernierCoupY-1]) {
+      if (this.tab[dernierCoupX-2][dernierCoupY-2] != tableau[dernierCoupX-2][dernierCoupY-2]) {
+        this.ptTab[dernierCoupX-1][dernierCoupY-1].setValue(0);
+        this.ptTab[dernierCoupX-2][dernierCoupY-2].setValue(0);
+        this.nbTenailles = nbTenailles + 1;
+      }
+    }
+    if (this.tab[dernierCoupX+1][dernierCoupY-1] != tableau[dernierCoupX+1][dernierCoupY-1]) {
+      if (this.tab[dernierCoupX+2][dernierCoupY-2] != tableau[dernierCoupX+2][dernierCoupY-2]) {
+        this.ptTab[dernierCoupX+1][dernierCoupY-1].setValue(0);
+        this.ptTab[dernierCoupX+2][dernierCoupY-2].setValue(0);
+        this.nbTenailles = nbTenailles + 1;
+      }
+    }
+    if (this.tab[dernierCoupX+1][dernierCoupY+1] != tableau[dernierCoupX+1][dernierCoupY+1]) {
+      if (this.tab[dernierCoupX+2][dernierCoupY+2] != tableau[dernierCoupX+2][dernierCoupY+2]) {
+        this.ptTab[dernierCoupX+1][dernierCoupY+1].setValue(0);
+        this.ptTab[dernierCoupX+2][dernierCoupY+2].setValue(0);
+        this.nbTenailles = nbTenailles + 1;
+      }
+    }
   }
   addPoint (dernierCoupX, dernierCoupY) {
     this.dernierCoup = new Point(dernierCoupX, dernierCoupY, this.tab[dernierCoupX][dernierCoupY]);
@@ -36,7 +91,16 @@ class IA {
     }
     this.subSection = section;
   }
-  play(dernierCoupX, dernierCoupY, tableau) {
+  play(dernierCoupX, dernierCoupY, tableau, nbTenailleJ1, nbTenailleJ2) {
+    if (this.numJoueur == 1) {
+      if (this.nbTenailles != nbTenailleJ1) {
+        this.handleTenailles(tableau);
+      }
+    } else {
+      if (this.nbTenailles != nbTenailleJ2) {
+        this.handleTenailles(tableau);
+      }
+    }
     this.setTab(tableau);
     this.addPoint(dernierCoupX, dernierCoupY);
     this.makeSubsection(dernierCoupX, dernierCoupY);
