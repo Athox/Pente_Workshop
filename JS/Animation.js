@@ -210,7 +210,8 @@ $(document).ready(function () {
   $(document).on("click", "#validate", function (evt) {
     var srv  = document.getElementById("srvadress").value;
     var name = document.getElementById("playername").value;
-    var gameMode = document.getElementById("gamemode").value;
+    var gameMode = document.getElementById("gamemode").checked;
+
     checkServer(srv, name, gameMode, function(val) {
       /*
       console.log("Adresse SRV -> " + ADRESSE_SRV);
