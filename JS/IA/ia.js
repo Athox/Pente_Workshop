@@ -15,7 +15,7 @@ class IA {
       this.ptTab = tab;
     }
   }
-  handleTenailles (tableau) {
+  handleTenailles (tableau, dernierCoupX, dernierCoupY) {
     if (this.tab[dernierCoupX][dernierCoupY+1] != tableau[dernierCoupX][dernierCoupY+1]) {
       if (this.tab[dernierCoupX][dernierCoupY+2] != tableau[dernierCoupX][dernierCoupY+2]) {
         this.ptTab[dernierCoupX][dernierCoupY+1].setValue(0);
@@ -74,9 +74,9 @@ class IA {
     }
   }
   addPoint (dernierCoupX, dernierCoupY) {
-    try {
+    if (typeof(this.ptTab[dernierCoupX][dernierCoupY]) == "object") {
       this.ptTab[dernierCoupX][dernierCoupY].setValue(this.tab[dernierCoupX][dernierCoupY]);
-    } catch (e) {
+    } else {
       this.dernierCoup = new Point(dernierCoupX, dernierCoupY, this.tab[dernierCoupX][dernierCoupY]);
       this.ptTab[dernierCoupX][dernierCoupY] = this.dernierCoup;
     }
@@ -170,11 +170,11 @@ class IA {
     } else {
       if (this.numJoueur == 1) {
         if (this.nbTenailles != nbTenailleJ1) {
-          this.handleTenailles(tableau);
+          this.handleTenailles(tableau, parseInt(dernierCoupX), parseInt(dernierCoupY));
         }
       } else {
         if (this.nbTenailles != nbTenailleJ2) {
-          this.handleTenailles(tableau);
+          this.handleTenailles(tableau, parseInt(dernierCoupX), parseInt(dernierCoupY));
         }
       }
       this.setTab(tableau);
@@ -224,7 +224,7 @@ class IA {
                       }
                     }
                   case 1:
-                    var neighborValue = this.getNeighborValueFromDir(l, c, 3, dir);
+                    var neighborValue = this.getNeighborValueFromDir(l, c, 2, dir);
                     if (this.subSection[l][c].value != this.numJoueur) {
                       // Si paire adverses
                       if (neighborValue == this.numJoueur) {
@@ -238,8 +238,12 @@ class IA {
                           priorityList["2"].push(toPlay);
                         }
                       } else {
-                        // Case opposée vide, mettre le premier pion pour un tenaille
-                        priorityList["3"].push(toPlay);
+                        // Case opposée vide
+                        var neighborValue = this.getNeighborValueFromDir(l, c, 3, dir);
+                        if (neighborValue != this.numJoueur) {
+                          // Si la case après l'opposée n'est pas alliée, mettre le premier pion pour un tenaille. Si alliée risque de tenaille adverse
+                          priorityList["3"].push(toPlay);
+                        }
                       }
                     } else {
                       // Si paire alliée
@@ -252,7 +256,7 @@ class IA {
                       }
                     }
                   case 0:
-                    var neighborValue = this.getNeighborValueFromDir(l, c, 2, dir);
+                    var neighborValue = this.getNeighborValueFromDir(l, c, 1, dir);
                     if (this.subSection[l][c].value == this.numJoueur) {
                       // Si case alliée
                       if (neighborValue != 0) {
@@ -269,7 +273,7 @@ class IA {
                         continue;
                       } else {
                         // Si case opposée libre,
-                        var otherNeighborValue = this.getNeighborValueFromDir(l, c, 3, dir);
+                        var otherNeighborValue = this.getNeighborValueFromDir(l, c, 2, dir);
                         if (otherNeighborValue == 0) {
                           // Si autre case libre, mettre un pion
                           priorityList["4"].push(toPlay);
@@ -290,19 +294,19 @@ class IA {
       }
       if (priorityList["1"].length > 0) {
         //var i = Math.random(0, priorityList["1"].length + 1);
-        var i = Math.floor((Math.random() * priorityList["1"].length) + 1);
+        var i = Math.floor(Math.random() * priorityList["1"].length);
         this.playPoint(priorityList["1"][i][0], priorityList["1"][i][1]);
         return priorityList["1"][i];
       } else if (priorityList["2"].length > 0) {
-        var i = Math.floor((Math.random() * priorityList["2"].length) + 1);
+        var i = Math.floor(Math.random() * priorityList["2"].length);
         this.playPoint(priorityList["2"][i][0], priorityList["2"][i][1]);
         return priorityList["2"][i];
       } else if (priorityList["3"].length > 0) {
-        var i = Math.floor((Math.random() * priorityList["3"].length) + 1);
+        var i = Math.floor(Math.random() * priorityList["3"].length);
         this.playPoint(priorityList["3"][i][0], priorityList["3"][i][1]);
         return priorityList["3"][i];
       } else if (priorityList["4"].length > 0) {
-        var i = Math.floor((Math.random() * priorityList["4"].length) + 1);
+        var i = Math.floor(Math.random() * priorityList["4"].length);
         this.playPoint(priorityList["4"][i][0], priorityList["4"][i][1]);
         return priorityList["4"][i];
       } else {

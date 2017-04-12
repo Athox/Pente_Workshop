@@ -1,8 +1,8 @@
 class Point {
     constructor (l, c, value) {
-        this.line = l;
-        this.column = c;
-        this.value = value;
+        this.line = parseInt(l);
+        this.column = parseInt(c);
+        this.value = parseInt(value);
         this.empty = [];
     }
     setValue (value) {
@@ -12,7 +12,7 @@ class Point {
         var response = [];
         switch (dir) {
           case "right":
-            if (this.empty.indexOf("left")) {
+            if (this.empty.indexOf("left") > -1) {
               response.push(this.line);
               response.push(this.column - 1);
               return response;
@@ -20,7 +20,7 @@ class Point {
               return false;
             }
           case "left":
-            if (this.empty.indexOf("right")) {
+            if (this.empty.indexOf("right") > -1) {
               response.push(this.line);
               response.push(this.column + 1);
               return response;
@@ -28,7 +28,7 @@ class Point {
               return false;
             }
           case "up":
-            if (this.empty.indexOf("down")) {
+            if (this.empty.indexOf("down") > -1) {
               response.push(this.line + 1);
               response.push(this.column);
               return response;
@@ -36,7 +36,7 @@ class Point {
               return false;
             }
           case "down":
-            if (this.empty.indexOf("up")) {
+            if (this.empty.indexOf("up") > -1) {
               response.push(this.line - 1);
               response.push(this.column);
               return response;
@@ -44,33 +44,33 @@ class Point {
               return false;
             }
           case "upRight":
-            if (this.empty.indexOf("downLeft")) {
-              response.push(this.line - 1);
-              response.push(this.column + 1);
+            if (this.empty.indexOf("downLeft") > -1) {
+              response.push(this.line + 1);
+              response.push(this.column - 1);
               return response;
             } else {
               return false;
             }
           case "upLeft":
-            if (this.empty.indexOf("downRight")) {
-              response.push(this.line - 1);
-              response.push(this.column - 1);
-              return response;
-            } else {
-              return false;
-            }
-          case "downRight":
-            if (this.empty.indexOf("upLeft")) {
+            if (this.empty.indexOf("downRight") > -1) {
               response.push(this.line + 1);
               response.push(this.column + 1);
               return response;
             } else {
               return false;
             }
-          case "downLeft":
-            if (this.empty.indexOf("upRight")) {
-              response.push(this.line + 1);
+          case "downRight":
+            if (this.empty.indexOf("upLeft") > -1) {
+              response.push(this.line - 1);
               response.push(this.column - 1);
+              return response;
+            } else {
+              return false;
+            }
+          case "downLeft":
+            if (this.empty.indexOf("upRight") > -1) {
+              response.push(this.line - 1);
+              response.push(this.column + 1);
               return response;
             } else {
               return false;
@@ -82,10 +82,10 @@ class Point {
         var nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
-              if (tab[this.line][this.column+i] == this.value) {
+              if (tab[this.line][parseInt(this.column)+i] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line][this.column+i] == 0) {
+              } else if (tab[this.line][parseInt(this.column)+i] == 0) {
                   this.empty.push("right");
                   break;
               } else {
@@ -102,10 +102,10 @@ class Point {
         var nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
-                if (tab[this.line][this.column-i] == this.value) {
+                if (tab[this.line][parseInt(this.column)-i] == this.value) {
                     nb_neighbors++;
                     continue;
-                } else if (tab[this.line][this.column-i] == 0) {
+                } else if (tab[this.line][parseInt(this.column)-i] == 0) {
                     this.empty.push("left");
                     break;
                 } else {
@@ -123,10 +123,10 @@ class Point {
         var nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
-              if (tab[this.line-i][this.column] == this.value) {
+              if (tab[parseInt(this.line)-i][this.column] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line-i][this.column] == 0) {
+              } else if (tab[parseInt(this.line)-i][this.column] == 0) {
                   this.empty.push("up");
                   break;
               } else {
@@ -143,10 +143,10 @@ class Point {
         var nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
-              if (tab[this.line+i][this.column] == this.value) {
+              if (tab[parseInt(this.line)+i][this.column] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line+i][this.column] == 0) {
+              } else if (tab[parseInt(this.line)+i][this.column] == 0) {
                   this.empty.push("down");
                   break;
               } else {
@@ -163,10 +163,10 @@ class Point {
         var nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
           try {
-            if (tab[this.line-i][this.column+i] == this.value) {
+            if (tab[parseInt(this.line)-i][parseInt(this.column)+i] == this.value) {
                 nb_neighbors++;
                 continue;
-            } else if (tab[this.line-i][this.column+i] == 0) {
+            } else if (tab[parseInt(this.line)-i][parseInt(this.column)+i] == 0) {
                 this.empty.push("upRight");
                 break;
             } else {
@@ -183,10 +183,10 @@ class Point {
         var nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
-              if (tab[this.line-i][this.column-i] == this.value) {
+              if (tab[parseInt(this.line)-i][parseInt(this.column)-i] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line-i][this.column-i] == 0) {
+              } else if (tab[parseInt(this.line)-i][parseInt(this.column)-i] == 0) {
                   this.empty.push("upLeft");
                   break;
               } else {
@@ -203,10 +203,10 @@ class Point {
         var nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
-              if (tab[this.line+i][this.column-i] == this.value) {
+              if (tab[parseInt(this.line)+i][parseInt(this.column)-i] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line+i][this.column-i] == 0) {
+              } else if (tab[parseInt(this.line)+i][parseInt(this.column)-i] == 0) {
                   this.empty.push("downLeft");
                   break;
               } else {
@@ -223,10 +223,10 @@ class Point {
         var nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
-              if (tab[this.line+i][this.column+i] == this.value) {
+              if (tab[parseInt(this.line)+i][parseInt(this.column)+i] == this.value) {
                   nb_neighbors++;
                   continue;
-              } else if (tab[this.line+i][this.column+i] == 0) {
+              } else if (tab[parseInt(this.line)+i][parseInt(this.column)+i] == 0) {
                   this.empty.push("downRight");
                   break;
               } else {
@@ -239,6 +239,7 @@ class Point {
         this.downRightNeighbors = nb_neighbors;
     }
     getAllNeighbors (tab) {
+        this.empty = [];
         this.getRightNeighbors(tab);
         this.getLeftNeighbors(tab);
         this.getUpNeighbors(tab);
@@ -254,7 +255,7 @@ class Point {
         neighbors["down"] = this.downNeighbors;
         neighbors["upRight"] = this.upRighNeighbors;
         neighbors["upLeft"] = this.upLeftNeighbors;
-        neighbors["downRight"] = this.downRighNeighbors;
+        neighbors["downRight"] = this.downRightNeighbors;
         neighbors["downLeft"] = this.downLeftNeighbors;
         return neighbors;
     }
