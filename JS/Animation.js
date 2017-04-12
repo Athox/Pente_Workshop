@@ -149,6 +149,8 @@ function playIA(){
   var toPlay = THE_IA.play(DERNIER_COUP_X, DERNIER_COUP_Y, TABLEAU, NB_TENAILLE_J1, NB_TENAILLE_J2, TURN_CPT);
   callServerPlay(toPlay[0], toPlay[1], function (ret){
     console.log("callServerPlay : " + CODE);
+
+    updatePoint();
   });
 }
 
@@ -203,6 +205,17 @@ function updateTable(){
 
 }
 
+function updatePoint(){
+  $(this).css('opacity', '1');
+
+  if(PLAYER_NUM == 1){
+    $(this).css('fill', COLOR_PION_J1);
+  }else if (PLAYER_NUM == 2) {
+    $(this).css('fill', COLOR_PION_J2);
+  }
+}
+
+// -----------------------------------------------------------------------------
 $(document).ready(function () {
 
   updateHeader();
@@ -256,15 +269,8 @@ $(document).ready(function () {
 
     // If status value is not 1, then it's not your turn to play
     if(STATUS == 1){
-      $(this).css('opacity', '1');
 
-      if(PLAYER_NUM == 1){
-        $(this).css('fill', COLOR_PION_J1);
-      }else if (PLAYER_NUM == 2) {
-        $(this).css('fill', COLOR_PION_J2);
-      }
-
-
+        updatePoint();
 
         var id = $(this).attr("id");
 
@@ -272,15 +278,16 @@ $(document).ready(function () {
         var y = $(this).attr("y");
 
         callServerPlay(x, y, function(val){
-          console.log(CODE);
-          console.log("Start thread Turn");
 
-          callServerTurn(function(ret){
-                console.log("callServerTurn code -> " + CODE)
+          var ret = checkCodeFromPlay();
 
-                  updateHeader();
-                  updateTable();
-              });
+          if(ret){
+            callServerTurn(function(ret)
+            {
+                    updateHeader();
+                    updateTable();
+            });
+          }
 
           ID_THREAD = setInterval(runThread(), 1000);
         });
