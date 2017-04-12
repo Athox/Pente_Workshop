@@ -191,7 +191,7 @@ class IA {
       priorityList["3"] = []; // Entamer une tenaille,  bloquer une ligne adverse non dangereuse, entamer ligne dangereuse (3)
       priorityList["4"] = []; // Entamer ligne (2), entamer ligne (3)
       for (var l in this.subSection) {
-        for (var c of this.subSection[l]) {
+        for (var c in this.subSection[l]) {
           if (typeof(this.subSection[l][c]) == "object") {
             var neighbors = this.subSection[l][c].getAllNeighbors(this.tab);
             for (var dir in neighbors) {
@@ -289,19 +289,20 @@ class IA {
         }
       }
       if (priorityList["1"].length > 0) {
-        var i = Math.random(0, priorityList["1"].length + 1);
+        //var i = Math.random(0, priorityList["1"].length + 1);
+        var i = Math.floor((Math.random() * priorityList["1"].length) + 1);
         this.playPoint(priorityList["1"][i][0], priorityList["1"][i][1]);
         return priorityList["1"][i];
       } else if (priorityList["2"].length > 0) {
-        var i = Math.random(0, priorityList["2"].length + 1);
+        var i = Math.floor((Math.random() * priorityList["2"].length) + 1);
         this.playPoint(priorityList["2"][i][0], priorityList["2"][i][1]);
         return priorityList["2"][i];
       } else if (priorityList["3"].length > 0) {
-        var i = Math.random(0, priorityList["3"].length + 1);
+        var i = Math.floor((Math.random() * priorityList["3"].length) + 1);
         this.playPoint(priorityList["3"][i][0], priorityList["3"][i][1]);
         return priorityList["3"][i];
       } else if (priorityList["4"].length > 0) {
-        var i = Math.random(0, priorityList["4"].length + 1);
+        var i = Math.floor((Math.random() * priorityList["4"].length) + 1);
         this.playPoint(priorityList["4"][i][0], priorityList["4"][i][1]);
         return priorityList["4"][i];
       } else {

@@ -79,7 +79,7 @@ class Point {
     }
     getRightNeighbors (tab) {
         //var side = tab[l][c];
-        var nb_neighbors = 0;
+        nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
               if (tab[this.line][this.column+i] == this.value) {
@@ -99,7 +99,7 @@ class Point {
     }
     getLeftNeighbors (tab) {
         //var side = tab[l][c];
-        var nb_neighbors = 0;
+        nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
                 if (tab[this.line][this.column-i] == this.value) {
@@ -120,7 +120,7 @@ class Point {
     }
     getUpNeighbors (tab) {
         //var side = tab[l][c];
-        var nb_neighbors = 0;
+        nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
               if (tab[this.line-i][this.column] == this.value) {
@@ -140,7 +140,7 @@ class Point {
     }
     getDownNeighbors (tab) {
         //var side = tab[l][c];
-        var nb_neighbors = 0;
+        nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
               if (tab[this.line+i][this.column] == this.value) {
@@ -160,7 +160,7 @@ class Point {
     }
     getUpRightNeighbors (tab) {
         //var side = tab[l][c];
-        var nb_neighbors = 0;
+        nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
           try {
             if (tab[this.line-i][this.column+i] == this.value) {
@@ -180,7 +180,7 @@ class Point {
     }
     getUpLeftNeighbors (tab) {
         //var side = tab[l][c];
-        var nb_neighbors = 0;
+        nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
               if (tab[this.line-i][this.column-i] == this.value) {
@@ -200,7 +200,7 @@ class Point {
     }
     getDownLeftNeighbors (tab) {
         //var side = tab[l][c];
-        var nb_neighbors = 0;
+        nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
               if (tab[this.line+i][this.column-i] == this.value) {
@@ -220,7 +220,7 @@ class Point {
     }
     getDownRightNeighbors (tab) {
         //var side = tab[l][c];
-        var nb_neighbors = 0;
+        nb_neighbors = 0;
         for (var i = 1; i < 4; i++) {
             try {
               if (tab[this.line+i][this.column+i] == this.value) {
