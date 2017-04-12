@@ -33,6 +33,22 @@ function checkServer(srv, player, cb_func){
   }
 }
 
+function runThread(){
+  clearInterval(ID_THREAD);
+  callServerTurn(
+    function(ret){
+      console.log("callServerTurn code -> " + CODE)
+
+      if(STATUS == 1){
+        updateHeader();
+        updateTable();
+        
+      }else{
+        ID_THREAD = setInterval(runThread(), 1000);
+      }
+    });
+}
+
 function callServerTurn(cb_func){
   $.ajax({
          url: "http://" + ADRESSE_SRV + "/turn/" + PLAYER_ID,
@@ -58,6 +74,8 @@ function callServerTurn(cb_func){
              PROLONGATION      = data.prolongation;
              FIN_PARTIE        = data.finPartie;
              DETAIL_FIN_PARTIE = data.detailFinPartie;
+
+             ret = "Your turn" + PLAYER_NAME;
 
            }else{
              ret = "Waiting your turn";
@@ -93,17 +111,55 @@ function callServerPlay(x, y, cb_func){
      });
 }
 
+function checkCodeFromPlay(){
+  var ret  = false;
+  var cons = "";
+
+  switch(CODE){
+    case "200":
+      ret  = true;
+      cons = "Play is validated";
+      break;
+
+    case "401":
+      cons = "Player is unauhorized (player name not validate for the game)";
+      break;
+
+    case "406":
+      cons = "Play is not validated";
+      break;
+
+    case "503":
+      cons = "Server is unavailable";
+      break;
+  }
+
+  console.log(cons);
+
+  return ret;
+}
 
 // IA --------------------------------------------------------------------------
 function playIA(x, y){
   callServerPlay(x, y, function (ret){
     console.log("Tour finis");
+
+    if(checkServer()){
+      // TODO
+    }
+
   });
 }
 
 // -----------------------------------------------------------------------------
 function updateHeader(){
-  document.getElementById("namej1").innerHTML  = PLAYER_NAME;
+  if(PLAYER_NUM == 1 )
+  {
+    document.getElementById("namej1").innerHTML  = PLAYER_NAME;
+  }
+  else if (PLAYER_NUM == 2 ) {
+    document.getElementById("namej2").innerHTML  = PLAYER_NAME;
+  }
 
   document.getElementById("score1").innerHTML  = NB_TENAILLE_J1;
   document.getElementById("score2").innerHTML  = NB_TENAILLE_J2;
@@ -114,6 +170,8 @@ function updateHeader(){
 function updateTable(){
   var tab = TABLEAU;
 
+  console.log("Update table for player " + PLAYER_NUM + " " + PLAYER_NAME);
+
   for(var x = 0; x < 19; x++){
 
     for(var y = 0; y < 19; y++){
@@ -123,10 +181,12 @@ function updateTable(){
 
       switch (val) {
         case 1:
-          document.getElementById(id).innerHTML = "j1";
+          $(id).css('opacity', '1');
+          $(id).css('fill', COLOR_PION_J1);
           break;
         case 2:
-          document.getElementById(id).innerHTML = "j1"
+          $(id).css('opacity', '1');
+          $(id).css('fill', COLOR_PION_J2);
           break;
         default:
           // Do nothing
@@ -147,48 +207,70 @@ $(document).ready(function () {
     var name = document.getElementById("playername").value;
 
     checkServer(srv, name, function(val) {
+      /*
       console.log("Adresse SRV -> " + ADRESSE_SRV);
       console.log("Player name -> " + PLAYER_NAME);
       console.log("Player ID   -> " + PLAYER_ID);
       console.log("Player num  -> " + PLAYER_NUM);
 
       console.log("checkServer code -> " + CODE);
-
-      document.getElementById("namej1").innerHTML = PLAYER_NAME;
-
-      // TODO -> Start IA
-
-      ID_THREAD = setInterval(callServerTurn(function(ret){
-          console.log("callServerTurn code -> " + CODE)
-
-          if(STATUS == 1){
-            updateHeader();
-            updateTable();
-          }
-
-      }), 500);
-
-      /*
-      clearInterval(ID_THREAD);
-      ID_THREAD = 0;
       */
 
+      if(CODE == "200"){
+        console.log("Player is connected to server");
+
+        document.getElementById("namej1").innerHTML = PLAYER_NAME;
+
+        // TODO -> Start IA
+
+        ID_THREAD = setInterval(runThread(), 1000);
+
+      }else if (CODE == "401") {
+        console.log("Game is already running, can't join the server");
+
+      }else{
+        console.log("Server conncetion failled. Error -> " + CODE);
+      }
     });
+  });
+
+  $("#gamemode").bind("click", function(evt){
+    HUMAN_VS_IA = true;
+    $(this).disabled = true;
+
+    console.log("Human vs IA mode activated");
   });
 
   $(".point").bind("click", function (evt){
 
-    // If status value is not 1, then it's not your turn to play
-    if(STATUS == 1){
-      var id = $(this).attr("id").value;
+    if(HUMAN_VS_IA){
 
-      var x = $(this).attr("x").value;
-      var y = $(this).attr("y").value;
+      $(this).css('opacity', '1');
 
-      callServerPlay(x, y, function(val){
-        $(this).css('opacity', '1');
-      });
+      if(PLAYER_NUM == 1){
+        $(this).css('fill', COLOR_PION_J1);
+      }else if (PLAYER_NUM == 2) {
+        $(this).css('fill', COLOR_PION_J2);
+      }
+
+
+      // If status value is not 1, then it's not your turn to play
+      if(STATUS == 1){
+        var id = $(this).attr("id").value;
+
+        var x = $(this).attr("x").value;
+        var y = $(this).attr("y").value;
+
+        callServerPlay(x, y, function(val){
+          console.log(CODE);
+          console.log("Start thread Turn");
+
+          ID_THREAD = setInterval(runThread(), 1000);
+        });
+
+      }
     }
+
   });
 
 

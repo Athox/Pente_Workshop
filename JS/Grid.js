@@ -114,9 +114,7 @@ var pion = grid.selectAll(".pion")
   .attr("id",function(d) { return d.lx+";"+d.ly; })
   .attr("width", function(d) { return d.width; })
   .attr("height", function(d) { return d.height; })
-  .style("fill", "black")
-  .style("stroke", "#222")
-  .style("opacity", "0")
+
 
 //x ligne y colonne
 function addPion(x,y,playerNumber)
@@ -125,13 +123,13 @@ function addPion(x,y,playerNumber)
   {
  pion.select("[x='"+x+"'][y='"+y+"']")
 .style("opacity", "1")
-.style("fill", "#013A6B")
+.style("fill", COLOR_PION_J1)
   }
   else if (playerNumber==2)
   {
 pion.select("[x='"+x+"'][y='"+y+"']")
 .style("opacity", "1")
-.style("fill", "#c1ad17")
+.style("fill", COLOR_PION_J2)
   }
 }
 

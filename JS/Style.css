@@ -156,9 +156,18 @@ text-align: center;
 #gamemode
 {
   float: right;
-  
+
 }
-button:hover { 
+button:hover {
     background-color: #34a388;
-    
+
+}
+.point{
+  fill:black;
+  stroke:#222;
+  opacity:0;
+}
+.point:hover
+{
+  opacity: 0.25;
 }
