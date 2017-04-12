@@ -193,7 +193,7 @@ function updateTable(){
         $(elem).css('fill', COLOR_PION_J2);
           break;
         default:
-          // Do nothing
+          $(elem).css('opacity', '0');
           break;
       }
     }
