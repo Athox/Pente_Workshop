@@ -159,15 +159,33 @@ function updateHeader(){
   if(PLAYER_NUM == 1 )
   {
     document.getElementById("namej1").innerHTML  = PLAYER_NAME;
+
+    if(STATUS == 1){
+      $('.player1').addClass('active');
+      $('.player2').removeClass('active');
+    }else{
+      $('.player1').removeClass('active');
+      $('.player2').addClass('active');
+    }
   }
   else if (PLAYER_NUM == 2 ) {
     document.getElementById("namej2").innerHTML  = PLAYER_NAME;
+
+    if(STATUS == 1){
+      $('.player1').removeClass('active');
+      $('.player2').addClass('active');
+    }else{
+      $('.player1').addClass('active');
+      $('.player2').removeClass('active');
+    }
   }
 
   document.getElementById("score1").innerHTML  = NB_TENAILLE_J1;
   document.getElementById("score2").innerHTML  = NB_TENAILLE_J2;
 
   document.getElementById("cptturn").innerHTML = TURN_CPT;
+
+
 }
 
 function updateTable(){
