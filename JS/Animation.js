@@ -59,7 +59,7 @@ function callServerTurn(cb_func){
 
            STATUS = data.status;
 
-           if(STATUS == 1){
+          // if(STATUS == 1 ){
 
              TABLEAU           = data.tableau;
 
@@ -77,9 +77,9 @@ function callServerTurn(cb_func){
 
              ret = "Your turn" + PLAYER_NAME;
 
-           }else{
+           /*}else{
              ret = "Waiting your turn";
-           }
+           }*/
 
             cb_func(ret);
 
