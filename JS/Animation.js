@@ -144,7 +144,7 @@ function checkCodeFromPlay(){
 }
 
 // IA --------------------------------------------------------------------------
-function playIA(x, y){
+function playIA(){
   THE_IA.setTab(TABLEAU);
   var toPlay = THE_IA.play(DERNIER_COUP_X, DERNIER_COUP_Y, TABLEAU, NB_TENAILLE_J1, NB_TENAILLE_J2, TURN_CPT);
   callServerPlay(toPlay[0], toPlay[1], function (ret){
