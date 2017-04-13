@@ -21,7 +21,7 @@ var NB_TENAILLE_J2    = 0;
 
 var PROLONGATION      = false;
 var FIN_PARTIE        = false;
-var DETAIL_FIN_PARTIE = ""
+var DETAIL_FIN_PARTIE = "";
 
 
 var ID_THREAD         = 0;

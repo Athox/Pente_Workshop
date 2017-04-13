@@ -223,7 +223,8 @@ function playIA(){
                   updateTable();
 
                   if(FIN_PARTIE){
-                    document.getElementById("popupwin").click();
+                    document.getElementById("popupendgamme").click();
+                    document.getElementById("endgame").innerHTML = DETAIL_FIN_PARTIE;
                   }
           });
         }
@@ -248,25 +249,31 @@ function runThread(){
 
       var ret = checkCodeFromTurn();
 
-      if(STATUS == 1){
-        TOAST_TEXT = "A vous de jouer !";
-        displayToast(1);
-
-        updateHeader();
-        updateTable();
-
         if(!FIN_PARTIE){
-          if (GAME_MODE_HUM == false) {
-            playIA();
+
+          if(STATUS == 1){
+            TOAST_TEXT = "A vous de jouer !";
+            displayToast(1);
+
+            updateHeader();
+            updateTable();
+
+
+              if (GAME_MODE_HUM == false) {
+                playIA();
+              }
+
+          }else{
+            if(ID_THREAD == 0 && FIN_PARTIE == false){
+              ID_THREAD = setInterval(runThread, 1000);
+            }
           }
+
         }else{
-          document.getElementById("popuplose").click();
+
+          document.getElementById("popupendgamme").click();
+          document.getElementById("endgame").innerHTML = DETAIL_FIN_PARTIE;
         }
-      }else{
-        if(ID_THREAD == 0 && FIN_PARTIE == false){
-          ID_THREAD = setInterval(runThread, 1000);
-        }
-      }
     });
 }
 
@@ -425,7 +432,8 @@ $(document).ready(function () {
                 var ret = checkCodeFromTurn();
 
                 if(FIN_PARTIE){
-                  document.getElementById("popupwin").click();
+                  document.getElementById("popupendgamme").click();
+                  document.getElementById("endgame").innerHTML = DETAIL_FIN_PARTIE;
                 }
 
                 updateHeader();
