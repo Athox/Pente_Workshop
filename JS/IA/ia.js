@@ -217,6 +217,61 @@ class IA {
         }
     }
   }
+  getInvertNeighborValueFromDir (l, c, distance, dir) {
+    l = parseInt(l);
+    c = parseInt(c);
+    distance = parseInt(distance);
+    switch (dir) {
+      case "right":
+        try {
+          return this.tab[l][c-distance];
+        } catch (e) {
+          return false;
+        }
+      case "left":
+        try {
+          return this.tab[l][c+distance];
+        } catch (e) {
+          return false;
+        }
+      case "up":
+        try {
+          return this.tab[l+distance][c];
+        } catch (e) {
+          return false;
+        }
+      case "down":
+        try {
+          return this.tab[l-distance][c];
+        } catch (e) {
+          return false;
+        }
+      case "upRight":
+        try {
+          return this.tab[l+distance][c-distance];
+        } catch (e) {
+          return false;
+        }
+      case "upLeft":
+        try {
+          return this.tab[l+distance][c+distance];
+        } catch (e) {
+          return false;
+        }
+      case "downRight":
+        try {
+          return this.tab[l-distance][c-distance];
+        } catch (e) {
+          return false;
+        }
+      case "downLeft":
+        try {
+          return this.tab[l-distance][c+distance];
+        } catch (e) {
+          return false;
+        }
+    }
+  }
   play(dernierCoupX, dernierCoupY, tableau, nbTenailleJ1, nbTenailleJ2, numTour) {
     if (dernierCoupX == null) {
       dernierCoupX = 0;
@@ -250,18 +305,19 @@ class IA {
           return [5,6];
         }
       }
-      this.makeSubsection(dernierCoupX, dernierCoupY);
+      //this.makeSubsection(dernierCoupX, dernierCoupY);
       var priorityList = {};
       priorityList["1"] = []; // Blocage critique
       priorityList["2"] = []; // Tenaille, éviter tenaille
       priorityList["3"] = []; // Entamer une tenaille,  bloquer une ligne adverse non dangereuse, entamer ligne dangereuse (3)
       priorityList["4"] = []; // Entamer ligne (2), entamer ligne (3)
-      for (var l in this.subSection) {
-        for (var c in this.subSection[l]) {
-          if (typeof(this.subSection[l][c]) == "object") {
-            var neighbors = this.subSection[l][c].getAllNeighbors(this.tab);
+      priorityList["5"] = [];
+      for (var l in this.ptTab) {
+        for (var c in this.ptTab[l]) {
+          if (typeof(this.ptTab[l][c]) == "object") {
+            var neighbors = this.ptTab[l][c].getAllNeighbors(this.tab);
             for (var dir in neighbors) {
-              var toPlay = this.subSection[l][c].checkIfEmpty(dir);
+              var toPlay = this.ptTab[l][c].checkIfEmpty(dir);
               if (toPlay != false) {
                 switch (neighbors[dir]) {
                   case 3:
@@ -269,8 +325,8 @@ class IA {
                     this.playPoint(toPlay[0], toPlay[1]);
                     return toPlay;
                   case 2:
-                    var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 3, dir);
-                    if (this.subSection[l][c].value != this.numJoueur) {
+                    var neighborValue = this.getNeighborValueFromDir(this.ptTab[l][c].line, this.ptTab[l][c].column, 3, dir);
+                    if (this.ptTab[l][c].value != this.numJoueur) {
                       // Si 3 pions adverses alignés
                       if (neighborValue == this.numJoueur) {
                         // Si case opposée alliée, bloquer sa ligne
@@ -294,8 +350,8 @@ class IA {
                       }
                     }
                   case 1:
-                    var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 2, dir);
-                    if (this.subSection[l][c].value != this.numJoueur) {
+                    var neighborValue = this.getNeighborValueFromDir(this.ptTab[l][c].line, this.ptTab[l][c].column, 2, dir);
+                    if (this.ptTab[l][c].value != this.numJoueur) {
                       // Si paire adverses
                       if (neighborValue == this.numJoueur) {
                         // Si la case opposée alliée, mettre un pion pour faire une tenaille
@@ -312,10 +368,10 @@ class IA {
                         }
                       } else {
                         // Case opposée vide
-                        var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 3, dir);
+                        var neighborValue = this.getNeighborValueFromDir(this.ptTab[l][c].line, this.ptTab[l][c].column, 3, dir);
                         if (neighborValue != this.numJoueur) {
                           // Si la case après l'opposée n'est pas alliée, mettre le premier pion pour un tenaille. Si alliée risque de tenaille adverse
-                          priorityList["3"].push(toPlay);
+                          priorityList["4"].push(toPlay);
                           break;
                         }
                       }
@@ -332,35 +388,35 @@ class IA {
                       }
                     }
                   case 0:
-                    var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 1, dir);
-                    if (this.subSection[l][c].value == this.numJoueur) {
+                    var neighborValue = this.getNeighborValueFromDir(this.ptTab[l][c].line, this.ptTab[l][c].column, 1, dir);
+                    if (this.ptTab[l][c].value == this.numJoueur) {
                       // Si case alliée
                       if (neighborValue != 0) {
                         // Si case opposée adverse, ne rien faire car on risque la tenaille
-                        continue;
+                        break;
                       } else {
                         // Si case libre, entamer un ligne
-                        priorityList["4"].push(toPlay);
+                        priorityList["5"].push(toPlay);
                         break;
                       }
                     } else {
                       // Si case adverse
                       if (neighborValue == this.numJoueur) {
                         // Si case opposée alliée, ne rien faire car possibilité de tenaille
-                        continue;
+                        break;
                       } else {
                         // Si case opposée libre,
-                        var otherNeighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 2, dir);
+                        var otherNeighborValue = this.getNeighborValueFromDir(this.ptTab[l][c].line, this.ptTab[l][c].column, 2, dir);
                         if (otherNeighborValue == 0) {
                           // Si autre case libre, mettre un pion
-                          priorityList["4"].push(toPlay);
+                          priorityList["5"].push(toPlay);
                           break;
                         } else if (otherNeighborValue == this.numJoueur) {
                           // Si autre case alliée, ne rien faire car possibilité de tenaille
-                          continue;
+                          break;
                         } else {
                           // Si autre case adverse, mettre car ligne possible
-                          priorityList["4"].push(toPlay);
+                          priorityList["5"].push(toPlay);
                           break;
                         }
                       }
@@ -391,6 +447,10 @@ class IA {
         var i = Math.floor(Math.random() * priorityList["4"].length);
         this.playPoint(priorityList["4"][i][0], priorityList["4"][i][1]);
         return priorityList["4"][i];
+      } else if (priorityList["5"].length > 0) {
+        var i = Math.floor(Math.random() * priorityList["5"].length);
+        this.playPoint(priorityList["5"][i][0], priorityList["5"][i][1]);
+        return priorityList["5"][i];
       } else {
         for (var l in this.tab) {
           for (var c in this.tab[l]) {
