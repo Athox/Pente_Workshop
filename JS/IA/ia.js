@@ -218,6 +218,12 @@ class IA {
     }
   }
   play(dernierCoupX, dernierCoupY, tableau, nbTenailleJ1, nbTenailleJ2, numTour) {
+    if (dernierCoupX == null) {
+      dernierCoupX = 0;
+    }
+    if (dernierCoupY == null) {
+      dernierCoupY = 0;
+    }
     if (numTour == 0) {
       // 1er à jouer => placer au centre au centre (9,9)
       this.playPoint(9,9);
@@ -247,7 +253,7 @@ class IA {
       this.makeSubsection(dernierCoupX, dernierCoupY);
       var priorityList = {};
       priorityList["1"] = []; // Blocage critique
-      priorityList["2"] = []; // Tenaille TODO modifier la valeur des points transformés, éviter tenaille
+      priorityList["2"] = []; // Tenaille, éviter tenaille
       priorityList["3"] = []; // Entamer une tenaille,  bloquer une ligne adverse non dangereuse, entamer ligne dangereuse (3)
       priorityList["4"] = []; // Entamer ligne (2), entamer ligne (3)
       for (var l in this.subSection) {
