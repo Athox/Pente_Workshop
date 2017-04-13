@@ -240,3 +240,8 @@ button:hover {
   overflow: auto;
 }
 
+.box 
+{
+  opacity: 0;
+}
+
