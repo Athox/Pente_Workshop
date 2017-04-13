@@ -48,7 +48,7 @@ function callServerTurn(cb_func){
 
              TABLEAU           = data.tableau;
 
-             TURN_CPT          = data.numTour;
+             // TURN_CPT          = data.numTour;
 
              NB_TENAILLE_J1    = data.nbTenaillesJ1;
              NB_TENAILLE_J2    = data.nbTenaillesJ2;
