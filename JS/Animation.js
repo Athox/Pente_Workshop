@@ -145,8 +145,10 @@ function checkCodeFromConnect(){
     if (GAME_MODE_HUM == false) {
       THE_IA = new IA(PLAYER_ID, PLAYER_NUM);
     }
+    if(ID_THREAD == 0){
+      ID_THREAD = setInterval(runThread, 1000);
+    }
 
-    ID_THREAD = setInterval(runThread, 1000);
 
     TOAST_TEXT       = "Vous êtes le joueur numéro " + PLAYER_NUM;
     TOAST_DISP_TIME  = 2000;
@@ -224,8 +226,10 @@ function playIA(){
               updateTable();
       });
     }
+    if(ID_THREAD == 0){
+      ID_THREAD = setInterval(runThread, 1000);
+    }
 
-    ID_THREAD = setInterval(runThread, 1000);
   });
 }
 
@@ -233,6 +237,8 @@ function playIA(){
 
 // -----------------------------------------------------------------------------
 function runThread(){
+  clearInterval(ID_THREAD);
+  ID_THREAD = 0;
   callServerTurn(
     function(ret){
       console.log("callServerTurn code -> " + CODE)
@@ -248,6 +254,10 @@ function runThread(){
 
         if (GAME_MODE_HUM == false) {
           playIA();
+        }
+      }else{
+        if(ID_THREAD == 0){
+          ID_THREAD = setInterval(runThread, 1000);
         }
       }
     });
@@ -408,7 +418,9 @@ $(document).ready(function () {
             });
           }
 
-          ID_THREAD = setInterval(runThread, 1000);
+          if(ID_THREAD == 0){
+            ID_THREAD = setInterval(runThread, 1000);
+          }
         });
 
       }
