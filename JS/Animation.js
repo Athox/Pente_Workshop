@@ -60,14 +60,12 @@ function callServerTurn(cb_func){
              FIN_PARTIE        = data.finPartie;
              DETAIL_FIN_PARTIE = data.detailFinPartie;
 
-             ret = "Your turn" + PLAYER_NAME;
-
-            cb_func(ret);
+            cb_func();
 
          },
          error: function (data) {
            CODE = data.status;
-           cb_func(ret);
+           cb_func();
          }
      });
 }
@@ -84,12 +82,12 @@ function callServerPlay(x, y, cb_func){
 
            STATUS = 0;
 
-           cb_func(ret);
+           cb_func();
 
          },
          error: function (data) {
             CODE = data.status;
-            cb_func(ret);
+            cb_func();
          }
      });
 }
@@ -145,7 +143,7 @@ function checkCodeFromConnect(){
     if (GAME_MODE_HUM == false) {
       THE_IA = new IA(PLAYER_ID, PLAYER_NUM);
     }
-    if(ID_THREAD == 0){
+    if(ID_THREAD == 0 && FIN_PARTIE == false){
       ID_THREAD = setInterval(runThread, 1000);
     }
 
@@ -173,7 +171,7 @@ function checkCodeFromTurn(){
   var ret  = false;
   var type = null;
 
-if(CODE != 200){
+  if(CODE != 200){
   switch(CODE){
 
     case 401:
@@ -193,12 +191,9 @@ if(CODE != 200){
 
   }
     displayToast(type);
-}else{
-  ret = true;
-}
-
-
-
+  }else{
+    ret = true;
+  }
   return ret;
 }
 
@@ -212,21 +207,25 @@ function playIA(){
 
   var toPlay = THE_IA.play(DERNIER_COUP_X, DERNIER_COUP_Y, TABLEAU, NB_TENAILLE_J1, NB_TENAILLE_J2, TURN_CPT);
 
-  callServerPlay(toPlay[0], toPlay[1], function(val){
+  callServerPlay(toPlay[0], toPlay[1], function(){
 
     var ret = checkCodeFromPlay();
 
     if(ret){
       updatePoint(this);
-      callServerTurn(function(ret)
+      callServerTurn(function()
       {
               checkCodeFromTurn();
 
               updateHeader();
               updateTable();
+
+              if(FIN_PARTIE){
+                document.getElementById("popupwin").click();
+              }
       });
     }
-    if(ID_THREAD == 0){
+    if(ID_THREAD == 0 && FIN_PARTIE == false){
       ID_THREAD = setInterval(runThread, 1000);
     }
 
@@ -252,11 +251,15 @@ function runThread(){
         updateHeader();
         updateTable();
 
-        if (GAME_MODE_HUM == false) {
-          playIA();
+        if(!FIN_PARTIE){
+          if (GAME_MODE_HUM == false) {
+            playIA();
+          }
+        }else{
+          document.getElementById("popuplose").click();
         }
       }else{
-        if(ID_THREAD == 0){
+        if(ID_THREAD == 0 && FIN_PARTIE == false){
           ID_THREAD = setInterval(runThread, 1000);
         }
       }
@@ -330,6 +333,8 @@ function updateTable(){
   }
 
   if(IS_FIRST_TURN){
+    TURN_CPT = 0;
+  }else{
     TURN_CPT = TURN_CPT + 1;
   }
 
@@ -352,9 +357,11 @@ function displayToast(type){
     showHideTransition: TOAST_TRANSITION,
     icon: TOAST_ICON[type],
     hideAfter: TOAST_DISP_TIME,
-    position: TOAST_POSITION
+    position: TOAST_POSITION,
+    loaderBg: TOAST_LOADER_COL
   });
 }
+
 
 
 // -----------------------------------------------------------------------------
@@ -402,23 +409,27 @@ $(document).ready(function () {
         var x = $(this).attr("x");
         var y = $(this).attr("y");
 
-        callServerPlay(x, y, function(val){
+        callServerPlay(x, y, function(){
 
           var ret = checkCodeFromPlay();
 
           if(ret){
             updatePoint(this);
 
-            callServerTurn(function(ret)
+            callServerTurn(function()
             {
                 var ret = checkCodeFromTurn();
+
+                if(FIN_PARTIE){
+                  document.getElementById("popupwin").click();
+                }
 
                 updateHeader();
                 updateTable();
             });
           }
 
-          if(ID_THREAD == 0){
+          if(ID_THREAD == 0 && FIN_PARTIE == false){
             ID_THREAD = setInterval(runThread, 1000);
           }
         });
