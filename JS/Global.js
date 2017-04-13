@@ -36,8 +36,9 @@ var THE_IA            = null;
 
 // Var for toast
 var TOAST_HEADING     = ['Réussite', 'Information', 'Erreur', 'Attention'];
-var TOAST_ICON        = ['sucess',   'info',        'error',  'warning'];
+var TOAST_ICON        = ['success',  'info',        'error',  'warning'];
 var TOAST_TRANSITION  = 'fade';
 var TOAST_TEXT        = "";
 var TOAST_DISP_TIME   = 1000;
 var TOAST_POSITION    = 'bottom-right';
+var TOAST_LOADER_COL  = "#43D1AF";
