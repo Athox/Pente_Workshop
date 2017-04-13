@@ -15,6 +15,59 @@ class IA {
       this.ptTab = tab;
     }
   }
+  doTenaille (l, c) {
+    l = parseInt(l);
+    c = parseInt(c);
+    var directions = ["left", "right", "up", "down", "upRight", "upLeft", "downRight", "downLeft"];
+    for (var dir in directions) {
+      var firstNeighborValue = this.getNeighborValueFromDir(l, c, 1, dir);
+      var secondNeighborValue = this.getNeighborValueFromDir(l, c, 2, dir);
+      if ((firstNeighborValue == secondNeighborValue) && (firstNeighborValue != this.numJoueur) && (firstNeighborValue != 0)) {
+        switch (dir) {
+          case "right":
+            this.ptTab[l][c+1] = 0;
+            this.ptTab[l][c+2] = 0;
+            this.nbTenailles++;
+            break;
+          case "left":
+            this.ptTab[l][c-1] = 0;
+            this.ptTab[l][c-2] = 0;
+            this.nbTenailles++;
+            break;
+          case "up":
+            this.ptTab[l-1][c] = 0;
+            this.ptTab[l-2][c] = 0;
+            this.nbTenailles++;
+            break;
+          case "down":
+            this.ptTab[l+1][c] = 0;
+            this.ptTab[l+2][c] = 0;
+            this.nbTenailles++;
+            break;
+          case "upRight":
+            this.ptTab[l-1][c+1] = 0;
+            this.ptTab[l-2][c+2] = 0;
+            this.nbTenailles++;
+            break;
+          case "upLeft":
+            this.ptTab[l-1][c-1] = 0;
+            this.ptTab[l-2][c-2] = 0;
+            this.nbTenailles++;
+            break;
+          case "downRight":
+            this.ptTab[l+1][c+1] = 0;
+            this.ptTab[l+2][c+2] = 0;
+            this.nbTenailles++;
+            break;
+          case "downLeft":
+            this.ptTab[l+1][c-1] = 0;
+            this.ptTab[l+2][c-2] = 0;
+            this.nbTenailles++;
+            break;
+        }
+      }
+    }
+  }
   handleTenailles (tableau, dernierCoupX, dernierCoupY) {
     if (this.tab[dernierCoupX][dernierCoupY+1] != tableau[dernierCoupX][dernierCoupY+1]) {
       if (this.tab[dernierCoupX][dernierCoupY+2] != tableau[dernierCoupX][dernierCoupY+2]) {
@@ -83,11 +136,10 @@ class IA {
   }
   playPoint (l, c) {
     this.tab[l][c] = this.numJoueur;
-    try {
+    if (typeof(this.ptTab[l][c]) == "object") {
       this.ptTab[l][c].setValue(this.tab[l][c]);
-    } catch (e) {
-      this.dernierCoup = new Point(l, c, this.tab[l][c]);
-      this.ptTab[l][c] = this.dernierCoup;
+    } else {
+      this.ptTab[l][c] = new Point(l, c, this.tab[l][c]);
     }
   }
   makeSubsection (dernierCoupX, dernierCoupY) {
@@ -111,6 +163,9 @@ class IA {
     this.subSection = section;
   }
   getNeighborValueFromDir (l, c, distance, dir) {
+    l = parseInt(l);
+    c = parseInt(c);
+    distance = parseInt(distance);
     switch (dir) {
       case "right":
         try {
@@ -197,13 +252,15 @@ class IA {
             for (var dir in neighbors) {
               var toPlay = this.subSection[l][c].checkIfEmpty(dir);
               if (toPlay != false) {
+                console.log(toPlay);
+                console.log(this.subSection[l][c]);
                 switch (neighbors[dir]) {
                   case 3:
                     // Si 4 pions alignés on met un pion pour gagner/bloquer
                     this.playPoint(toPlay[0], toPlay[1]);
                     return toPlay;
                   case 2:
-                    var neighborValue = this.getNeighborValueFromDir(l, c, 4, dir);
+                    var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 4, dir);
                     if (this.subSection[l][c].value != this.numJoueur) {
                       // Si 3 pions adverses alignés
                       if (neighborValue == this.numJoueur) {
@@ -224,7 +281,7 @@ class IA {
                       }
                     }
                   case 1:
-                    var neighborValue = this.getNeighborValueFromDir(l, c, 2, dir);
+                    var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 2, dir);
                     if (this.subSection[l][c].value != this.numJoueur) {
                       // Si paire adverses
                       if (neighborValue == this.numJoueur) {
@@ -235,11 +292,13 @@ class IA {
                           return toPlay;
                         } else {
                           // Sinon faire une tenaille
+                          toPlay.push("tenaille");
+                          toPlay.push(dir);
                           priorityList["2"].push(toPlay);
                         }
                       } else {
                         // Case opposée vide
-                        var neighborValue = this.getNeighborValueFromDir(l, c, 3, dir);
+                        var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 3, dir);
                         if (neighborValue != this.numJoueur) {
                           // Si la case après l'opposée n'est pas alliée, mettre le premier pion pour un tenaille. Si alliée risque de tenaille adverse
                           priorityList["3"].push(toPlay);
@@ -256,7 +315,7 @@ class IA {
                       }
                     }
                   case 0:
-                    var neighborValue = this.getNeighborValueFromDir(l, c, 1, dir);
+                    var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 1, dir);
                     if (this.subSection[l][c].value == this.numJoueur) {
                       // Si case alliée
                       if (neighborValue != 0) {
@@ -273,7 +332,7 @@ class IA {
                         continue;
                       } else {
                         // Si case opposée libre,
-                        var otherNeighborValue = this.getNeighborValueFromDir(l, c, 2, dir);
+                        var otherNeighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 2, dir);
                         if (otherNeighborValue == 0) {
                           // Si autre case libre, mettre un pion
                           priorityList["4"].push(toPlay);
@@ -300,6 +359,9 @@ class IA {
       } else if (priorityList["2"].length > 0) {
         var i = Math.floor(Math.random() * priorityList["2"].length);
         this.playPoint(priorityList["2"][i][0], priorityList["2"][i][1]);
+        if (priorityList["2"][i].indexOf("tenaille") > -1) {
+          this.doTenaille(priorityList["2"][i][0],priorityList["2"][i][1], priorityList["2"][i][3]);
+        }
         return priorityList["2"][i];
       } else if (priorityList["3"].length > 0) {
         var i = Math.floor(Math.random() * priorityList["3"].length);
