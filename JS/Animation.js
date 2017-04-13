@@ -207,29 +207,33 @@ function playIA(){
 
   var toPlay = THE_IA.play(DERNIER_COUP_X, DERNIER_COUP_Y, TABLEAU, NB_TENAILLE_J1, NB_TENAILLE_J2, TURN_CPT);
 
-  callServerPlay(toPlay[0], toPlay[1], function(){
+  setTimeout(function() {
 
-    var ret = checkCodeFromPlay();
+      callServerPlay(toPlay[0], toPlay[1], function(){
 
-    if(ret){
-      updatePoint(this);
-      callServerTurn(function()
-      {
-              checkCodeFromTurn();
+        var ret = checkCodeFromPlay();
 
-              updateHeader();
-              updateTable();
+        if(ret){
+          updatePoint(this);
+          callServerTurn(function()
+          {
+                  checkCodeFromTurn();
 
-              if(FIN_PARTIE){
-                document.getElementById("popupwin").click();
-              }
+                  updateHeader();
+                  updateTable();
+
+                  if(FIN_PARTIE){
+                    document.getElementById("popupwin").click();
+                  }
+          });
+        }
+        if(ID_THREAD == 0 && FIN_PARTIE == false){
+          ID_THREAD = setInterval(runThread, 1000);
+        }
+
       });
-    }
-    if(ID_THREAD == 0 && FIN_PARTIE == false){
-      ID_THREAD = setInterval(runThread, 1000);
-    }
 
-  });
+  }, TMP_FOR_PLAY);
 }
 
 
