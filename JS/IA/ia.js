@@ -69,61 +69,93 @@ class IA {
     }
   }
   handleTenailles (tableau, dernierCoupX, dernierCoupY) {
-    if (this.tab[dernierCoupX][dernierCoupY+1] != tableau[dernierCoupX][dernierCoupY+1]) {
-      if (this.tab[dernierCoupX][dernierCoupY+2] != tableau[dernierCoupX][dernierCoupY+2]) {
-        this.ptTab[dernierCoupX][dernierCoupY+1].setValue(0);
-        this.ptTab[dernierCoupX][dernierCoupY+2].setValue(0);
-        this.nbTenailles = nbTenailles + 1;
+    try {
+      if (this.tab[dernierCoupX][dernierCoupY+1] != tableau[dernierCoupX][dernierCoupY+1]) {
+        if (this.tab[dernierCoupX][dernierCoupY+2] != tableau[dernierCoupX][dernierCoupY+2]) {
+          this.ptTab[dernierCoupX][dernierCoupY+1].setValue(0);
+          this.ptTab[dernierCoupX][dernierCoupY+2].setValue(0);
+          this.nbTenailles = nbTenailles + 1;
+        }
       }
+    } catch (e) {
+      continue;
     }
-    if (this.tab[dernierCoupX][dernierCoupY-1] != tableau[dernierCoupX][dernierCoupY-1]) {
-      if (this.tab[dernierCoupX][dernierCoupY-2] != tableau[dernierCoupX][dernierCoupY-2]) {
-        this.ptTab[dernierCoupX][dernierCoupY-1].setValue(0);
-        this.ptTab[dernierCoupX][dernierCoupY-2].setValue(0);
-        this.nbTenailles = nbTenailles + 1;
+    try {
+      if (this.tab[dernierCoupX][dernierCoupY-1] != tableau[dernierCoupX][dernierCoupY-1]) {
+        if (this.tab[dernierCoupX][dernierCoupY-2] != tableau[dernierCoupX][dernierCoupY-2]) {
+          this.ptTab[dernierCoupX][dernierCoupY-1].setValue(0);
+          this.ptTab[dernierCoupX][dernierCoupY-2].setValue(0);
+          this.nbTenailles = nbTenailles + 1;
+        }
       }
+    } catch (e) {
+      continue;
     }
-    if (this.tab[dernierCoupX-1][dernierCoupY] != tableau[dernierCoupX-1][dernierCoupY]) {
-      if (this.tab[dernierCoupX-2][dernierCoupY] != tableau[dernierCoupX-2][dernierCoupY]) {
-        this.ptTab[dernierCoupX-1][dernierCoupY].setValue(0);
-        this.ptTab[dernierCoupX-2][dernierCoupY].setValue(0);
-        this.nbTenailles = nbTenailles + 1;
+    try {
+      if (this.tab[dernierCoupX-1][dernierCoupY] != tableau[dernierCoupX-1][dernierCoupY]) {
+        if (this.tab[dernierCoupX-2][dernierCoupY] != tableau[dernierCoupX-2][dernierCoupY]) {
+          this.ptTab[dernierCoupX-1][dernierCoupY].setValue(0);
+          this.ptTab[dernierCoupX-2][dernierCoupY].setValue(0);
+          this.nbTenailles = nbTenailles + 1;
+        }
       }
+    } catch (e) {
+      continue;
     }
-    if (this.tab[dernierCoupX+1][dernierCoupY] != tableau[dernierCoupX+1][dernierCoupY]) {
-      if (this.tab[dernierCoupX+2][dernierCoupY] != tableau[dernierCoupX+2][dernierCoupY]) {
-        this.ptTab[dernierCoupX+1][dernierCoupY].setValue(0);
-        this.ptTab[dernierCoupX+2][dernierCoupY].setValue(0);
-        this.nbTenailles = nbTenailles + 1;
+    try {
+      if (this.tab[dernierCoupX+1][dernierCoupY] != tableau[dernierCoupX+1][dernierCoupY]) {
+        if (this.tab[dernierCoupX+2][dernierCoupY] != tableau[dernierCoupX+2][dernierCoupY]) {
+          this.ptTab[dernierCoupX+1][dernierCoupY].setValue(0);
+          this.ptTab[dernierCoupX+2][dernierCoupY].setValue(0);
+          this.nbTenailles = nbTenailles + 1;
+        }
       }
+    } catch (e) {
+      continue;
     }
-    if (this.tab[dernierCoupX-1][dernierCoupY+1] != tableau[dernierCoupX-1][dernierCoupY+1]) {
-      if (this.tab[dernierCoupX-2][dernierCoupY+2] != tableau[dernierCoupX-2][dernierCoupY+2]) {
-        this.ptTab[dernierCoupX-1][dernierCoupY+1].setValue(0);
-        this.ptTab[dernierCoupX-2][dernierCoupY+2].setValue(0);
-        this.nbTenailles = nbTenailles + 1;
+    try {
+      if (this.tab[dernierCoupX-1][dernierCoupY+1] != tableau[dernierCoupX-1][dernierCoupY+1]) {
+        if (this.tab[dernierCoupX-2][dernierCoupY+2] != tableau[dernierCoupX-2][dernierCoupY+2]) {
+          this.ptTab[dernierCoupX-1][dernierCoupY+1].setValue(0);
+          this.ptTab[dernierCoupX-2][dernierCoupY+2].setValue(0);
+          this.nbTenailles = nbTenailles + 1;
+        }
       }
+    } catch (e) {
+      continue;
     }
-    if (this.tab[dernierCoupX-1][dernierCoupY-1] != tableau[dernierCoupX-1][dernierCoupY-1]) {
-      if (this.tab[dernierCoupX-2][dernierCoupY-2] != tableau[dernierCoupX-2][dernierCoupY-2]) {
-        this.ptTab[dernierCoupX-1][dernierCoupY-1].setValue(0);
-        this.ptTab[dernierCoupX-2][dernierCoupY-2].setValue(0);
-        this.nbTenailles = nbTenailles + 1;
+    try {
+      if (this.tab[dernierCoupX-1][dernierCoupY-1] != tableau[dernierCoupX-1][dernierCoupY-1]) {
+        if (this.tab[dernierCoupX-2][dernierCoupY-2] != tableau[dernierCoupX-2][dernierCoupY-2]) {
+          this.ptTab[dernierCoupX-1][dernierCoupY-1].setValue(0);
+          this.ptTab[dernierCoupX-2][dernierCoupY-2].setValue(0);
+          this.nbTenailles = nbTenailles + 1;
+        }
       }
+    } catch (e) {
+      continue;
     }
-    if (this.tab[dernierCoupX+1][dernierCoupY-1] != tableau[dernierCoupX+1][dernierCoupY-1]) {
-      if (this.tab[dernierCoupX+2][dernierCoupY-2] != tableau[dernierCoupX+2][dernierCoupY-2]) {
-        this.ptTab[dernierCoupX+1][dernierCoupY-1].setValue(0);
-        this.ptTab[dernierCoupX+2][dernierCoupY-2].setValue(0);
-        this.nbTenailles = nbTenailles + 1;
+    try {
+      if (this.tab[dernierCoupX+1][dernierCoupY-1] != tableau[dernierCoupX+1][dernierCoupY-1]) {
+        if (this.tab[dernierCoupX+2][dernierCoupY-2] != tableau[dernierCoupX+2][dernierCoupY-2]) {
+          this.ptTab[dernierCoupX+1][dernierCoupY-1].setValue(0);
+          this.ptTab[dernierCoupX+2][dernierCoupY-2].setValue(0);
+          this.nbTenailles = nbTenailles + 1;
+        }
       }
+    } catch (e) {
+      continue;
     }
-    if (this.tab[dernierCoupX+1][dernierCoupY+1] != tableau[dernierCoupX+1][dernierCoupY+1]) {
-      if (this.tab[dernierCoupX+2][dernierCoupY+2] != tableau[dernierCoupX+2][dernierCoupY+2]) {
-        this.ptTab[dernierCoupX+1][dernierCoupY+1].setValue(0);
-        this.ptTab[dernierCoupX+2][dernierCoupY+2].setValue(0);
-        this.nbTenailles = nbTenailles + 1;
+    try {
+      if (this.tab[dernierCoupX+1][dernierCoupY+1] != tableau[dernierCoupX+1][dernierCoupY+1]) {
+        if (this.tab[dernierCoupX+2][dernierCoupY+2] != tableau[dernierCoupX+2][dernierCoupY+2]) {
+          this.ptTab[dernierCoupX+1][dernierCoupY+1].setValue(0);
+          this.ptTab[dernierCoupX+2][dernierCoupY+2].setValue(0);
+          this.nbTenailles = nbTenailles + 1;
+        }
       }
+    } catch (e) {
+      continue;
     }
   }
   addPoint (dernierCoupX, dernierCoupY) {
@@ -328,6 +360,12 @@ class IA {
                     var neighborValue = this.getNeighborValueFromDir(this.ptTab[l][c].line, this.ptTab[l][c].column, 3, dir);
                     if (this.ptTab[l][c].value != this.numJoueur) {
                       // Si 3 pions adverses alignés
+                      var backNeighborValue = this.getNeighborValueFromDir(this.ptTab[l][c].line, this.ptTab[l][c].column, -1, dir);
+                      if (backNeighborValue != this.numJoueur && backNeighborValue != 0) {
+                        // Si pion derrière adverse aussi, il faut empecher la tenaille
+                        priorityList["1"].push(toPlay);
+                        break;
+                      }
                       if (neighborValue == this.numJoueur) {
                         // Si case opposée alliée, bloquer sa ligne
                         priorityList["3"].push(toPlay);
