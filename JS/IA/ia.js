@@ -311,6 +311,7 @@ class IA {
       priorityList["2"] = []; // Tenaille, éviter tenaille
       priorityList["3"] = []; // Entamer une tenaille,  bloquer une ligne adverse non dangereuse, entamer ligne dangereuse (3)
       priorityList["4"] = []; // Entamer ligne (2), entamer ligne (3)
+      priorityList["5"] = [];
       for (var l in this.ptTab) {
         for (var c in this.ptTab[l]) {
           if (typeof(this.ptTab[l][c]) == "object") {
@@ -370,7 +371,7 @@ class IA {
                         var neighborValue = this.getNeighborValueFromDir(this.ptTab[l][c].line, this.ptTab[l][c].column, 3, dir);
                         if (neighborValue != this.numJoueur) {
                           // Si la case après l'opposée n'est pas alliée, mettre le premier pion pour un tenaille. Si alliée risque de tenaille adverse
-                          priorityList["3"].push(toPlay);
+                          priorityList["4"].push(toPlay);
                           break;
                         }
                       }
@@ -395,7 +396,7 @@ class IA {
                         break;
                       } else {
                         // Si case libre, entamer un ligne
-                        priorityList["4"].push(toPlay);
+                        priorityList["5"].push(toPlay);
                         break;
                       }
                     } else {
@@ -408,14 +409,14 @@ class IA {
                         var otherNeighborValue = this.getNeighborValueFromDir(this.ptTab[l][c].line, this.ptTab[l][c].column, 2, dir);
                         if (otherNeighborValue == 0) {
                           // Si autre case libre, mettre un pion
-                          priorityList["4"].push(toPlay);
+                          priorityList["5"].push(toPlay);
                           break;
                         } else if (otherNeighborValue == this.numJoueur) {
                           // Si autre case alliée, ne rien faire car possibilité de tenaille
                           break;
                         } else {
                           // Si autre case adverse, mettre car ligne possible
-                          priorityList["4"].push(toPlay);
+                          priorityList["5"].push(toPlay);
                           break;
                         }
                       }
@@ -446,6 +447,10 @@ class IA {
         var i = Math.floor(Math.random() * priorityList["4"].length);
         this.playPoint(priorityList["4"][i][0], priorityList["4"][i][1]);
         return priorityList["4"][i];
+      } else if (priorityList["5"].length > 0) {
+        var i = Math.floor(Math.random() * priorityList["5"].length);
+        this.playPoint(priorityList["5"][i][0], priorityList["5"][i][1]);
+        return priorityList["5"][i];
       } else {
         for (var l in this.tab) {
           for (var c in this.tab[l]) {
