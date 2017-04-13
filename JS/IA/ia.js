@@ -236,8 +236,13 @@ class IA {
       this.addPoint(dernierCoupX, dernierCoupY);
       if (numTour == 2) {
         // 2eme pion à placer à au moins 3 cases du 1er
-        this.playPoint(5,5);
-        return [5,5];
+        if (dernierCoupX != 5 && dernierCoupY != 5) {
+          this.playPoint(5,5);
+          return [5,5];
+        } else {
+          this.playPoint(5,6);
+          return [5,6];
+        }
       }
       this.makeSubsection(dernierCoupX, dernierCoupY);
       var priorityList = {};
@@ -252,32 +257,34 @@ class IA {
             for (var dir in neighbors) {
               var toPlay = this.subSection[l][c].checkIfEmpty(dir);
               if (toPlay != false) {
-                console.log(toPlay);
-                console.log(this.subSection[l][c]);
                 switch (neighbors[dir]) {
                   case 3:
                     // Si 4 pions alignés on met un pion pour gagner/bloquer
                     this.playPoint(toPlay[0], toPlay[1]);
                     return toPlay;
                   case 2:
-                    var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 4, dir);
+                    var neighborValue = this.getNeighborValueFromDir(this.subSection[l][c].line, this.subSection[l][c].column, 3, dir);
                     if (this.subSection[l][c].value != this.numJoueur) {
                       // Si 3 pions adverses alignés
                       if (neighborValue == this.numJoueur) {
                         // Si case opposée alliée, bloquer sa ligne
                         priorityList["3"].push(toPlay);
+                        break;
                       } else {
                         // Si case opposée vide, empêcher l'entame d'une ligne de 5 adverse
                         priorityList["1"].push(toPlay);
+                        break;
                       }
                     } else {
                       // Si 3 pions alliés alignés
                       if (neighborValue == 0) {
                         // Si case opposée vide, entamer ligne de 5 dangereuse
                         priorityList["3"].push(toPlay);
+                        break;
                       } else {
                         // Si case opposée adverse, entamer ligne non dangereuse
                         priorityList["4"].push(toPlay);
+                        break;
                       }
                     }
                   case 1:
@@ -295,6 +302,7 @@ class IA {
                           toPlay.push("tenaille");
                           toPlay.push(dir);
                           priorityList["2"].push(toPlay);
+                          break;
                         }
                       } else {
                         // Case opposée vide
@@ -302,6 +310,7 @@ class IA {
                         if (neighborValue != this.numJoueur) {
                           // Si la case après l'opposée n'est pas alliée, mettre le premier pion pour un tenaille. Si alliée risque de tenaille adverse
                           priorityList["3"].push(toPlay);
+                          break;
                         }
                       }
                     } else {
@@ -309,9 +318,11 @@ class IA {
                       if (neighborValue != 0) {
                         // Si opposée adverse, mettre un pion pour éviter une tenaille adverse
                         priorityList["2"].push(toPlay);
+                        break;
                       } else {
                         // Si case libre, entamer une ligne de 5
                         priorityList["4"].push(toPlay);
+                        break;
                       }
                     }
                   case 0:
@@ -324,6 +335,7 @@ class IA {
                       } else {
                         // Si case libre, entamer un ligne
                         priorityList["4"].push(toPlay);
+                        break;
                       }
                     } else {
                       // Si case adverse
@@ -336,12 +348,14 @@ class IA {
                         if (otherNeighborValue == 0) {
                           // Si autre case libre, mettre un pion
                           priorityList["4"].push(toPlay);
+                          break;
                         } else if (otherNeighborValue == this.numJoueur) {
                           // Si autre case alliée, ne rien faire car possibilité de tenaille
                           continue;
                         } else {
                           // Si autre case adverse, mettre car ligne possible
                           priorityList["4"].push(toPlay);
+                          break;
                         }
                       }
                     }

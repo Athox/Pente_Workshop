@@ -79,6 +79,7 @@ class Point {
     }
     getRightNeighbors (tab) {
         var nb_neighbors = 0;
+        this.rightNeighbors = nb_neighbors;
         try {
           if (tab[parseInt(this.line)][parseInt(this.column)+1] == 0) {
               this.empty.push("right");
@@ -86,7 +87,6 @@ class Point {
               return;
           }
         } catch (e) {
-          this.rightNeighbors = nb_neighbors;
           return;
         }
         for (var i = 1; i < 4; i++) {
@@ -105,6 +105,7 @@ class Point {
     }
     getLeftNeighbors (tab) {
         var nb_neighbors = 0;
+        this.leftNeighbors = nb_neighbors;
         try {
           if (tab[parseInt(this.line)][parseInt(this.column)-1] == 0) {
               this.empty.push("left");
@@ -112,7 +113,6 @@ class Point {
               return;
           }
         } catch (e) {
-          this.leftNeighbors = nb_neighbors;
           return;
         }
         for (var i = 1; i < 4; i++) {
@@ -132,6 +132,7 @@ class Point {
     }
     getUpNeighbors (tab) {
         var nb_neighbors = 0;
+        this.upNeighbors = nb_neighbors;
         try {
           if (tab[parseInt(this.line)-1][parseInt(this.column)] == 0) {
               this.empty.push("up");
@@ -139,7 +140,6 @@ class Point {
               return;
           }
         } catch (e) {
-          this.upNeighbors = nb_neighbors;
           return;
         }
         for (var i = 1; i < 4; i++) {
@@ -158,6 +158,7 @@ class Point {
     }
     getDownNeighbors (tab) {
         var nb_neighbors = 0;
+        this.downNeighbors = nb_neighbors;
         try {
           if (tab[parseInt(this.line)+1][parseInt(this.column)] == 0) {
               this.empty.push("down");
@@ -165,7 +166,6 @@ class Point {
               return;
           }
         } catch (e) {
-          this.downNeighbors = nb_neighbors;
           return;
         }
         for (var i = 1; i < 4; i++) {
@@ -184,6 +184,7 @@ class Point {
     }
     getUpRightNeighbors (tab) {
         var nb_neighbors = 0;
+        this.upRighNeighbors = nb_neighbors;
         try {
           if (tab[parseInt(this.line)-1][parseInt(this.column)+1] == 0) {
               this.empty.push("upRight");
@@ -191,7 +192,6 @@ class Point {
               return;
           }
         } catch (e) {
-          this.upRighNeighbors = nb_neighbors;
           return;
         }
         for (var i = 1; i < 4; i++) {
@@ -210,6 +210,7 @@ class Point {
     }
     getUpLeftNeighbors (tab) {
         var nb_neighbors = 0;
+        this.upLeftNeighbors = nb_neighbors;
         try {
           if (tab[parseInt(this.line)-1][parseInt(this.column)-1] == 0) {
               this.empty.push("upLeft");
@@ -217,7 +218,6 @@ class Point {
               return;
           }
         } catch (e) {
-          this.upLeftNeighbors = nb_neighbors;
           return;
         }
         for (var i = 1; i < 4; i++) {
@@ -236,6 +236,7 @@ class Point {
     }
     getDownLeftNeighbors (tab) {
         var nb_neighbors = 0;
+        this.downLeftNeighbors = 0;
         try {
           if (tab[parseInt(this.line)+1][parseInt(this.column)-1] == 0) {
               this.empty.push("downLeft");
@@ -243,7 +244,6 @@ class Point {
               return;
           }
         } catch (e) {
-          this.downLeftNeighbors = nb_neighbors;
           return;
         }
         for (var i = 1; i < 4; i++) {
@@ -262,14 +262,14 @@ class Point {
     }
     getDownRightNeighbors (tab) {
         var nb_neighbors = 0;
+        this.downRightNeighbors = nb_neighbors;
         try {
           if (tab[parseInt(this.line)+1][parseInt(this.column)+1] == 0) {
               this.empty.push("downRight");
-              this.downLeftNeighbors = nb_neighbors;
+              this.downRightNeighbors = nb_neighbors;
               return;
           }
         } catch (e) {
-          this.downLeftNeighbors = nb_neighbors;
           return;
         }
         for (var i = 1; i < 4; i++) {
