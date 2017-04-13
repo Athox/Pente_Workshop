@@ -233,11 +233,12 @@ function playIA(){
 // -----------------------------------------------------------------------------
 function runThread(){
   clearInterval(ID_THREAD);
+  ID_THREAD = 0;
   callServerTurn(
     function(ret){
       console.log("callServerTurn code -> " + CODE)
 
-      checkCodeFromTurn();
+      var ret = checkCodeFromTurn();
 
       if(STATUS == 1){
         TOAST_TEXT = "A vous de jouer !";
@@ -250,7 +251,10 @@ function runThread(){
           playIA();
         }
       }else{
-        ID_THREAD = setInterval(runThread(), 1000);
+        if(ID_THREAD == 0){
+          ID_THREAD = setInterval(runThread(), 1000);
+        }
+
       }
     });
 }
@@ -403,7 +407,7 @@ $(document).ready(function () {
 
             callServerTurn(function(ret)
             {
-                checkCodeFromTurn();
+                var ret = checkCodeFromTurn();
 
                 updateHeader();
                 updateTable();
