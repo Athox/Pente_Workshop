@@ -138,12 +138,13 @@ function checkCodeFromConnect(){
 
     ID_THREAD = setInterval(runThread(), 1000);
 
-    /*$.toast({
+
+    $.toast({
       heading: 'Information',
       text: 'Now you can add icons to generate different kinds of toasts',
       showHideTransition: 'slide',
       icon: 'info'
-    });*/
+    });
 
   }else if (CODE == "401") {
     console.log("Game is already running, can't join the server");
