@@ -9,6 +9,7 @@ var PLAYER_NAME       = "Joueur 1";
 var STATUS            = 0;
 
 var TURN_CPT          = 0;
+var IS_FIRST_TURN     = true;
 
 var TABLEAU           = null;
 
@@ -39,3 +40,4 @@ var TOAST_ICON        = ['sucess',   'info',        'error',  'warning'];
 var TOAST_TRANSITION  = 'fade';
 var TOAST_TEXT        = "";
 var TOAST_DISP_TIME   = 1000;
+var TOAST_POSITION    = 'bottom-right';

@@ -29,7 +29,8 @@ function checkServer(srv, player, gameMode, cb_func){
 
            },
            error: function (x, y, z) {
-              console.log(x.responseText + "  " + x.status);
+             CODE = data.status;
+             cb_func(ret);
            }
        });
   }
@@ -65,7 +66,8 @@ function callServerTurn(cb_func){
 
          },
          error: function (x, y, z) {
-            console.log(x.responseText + "  " + x.status)
+           CODE = data.status;
+           cb_func(ret);
          }
      });
 }
@@ -98,22 +100,86 @@ function checkCodeFromPlay(){
   var ret  = false;
   var type = null;
 
+  if(CODE != 200){
+    switch(CODE){
+      case 401:
+        TOAST_TEXT = "Le joueur n'est pas authorisé (le nom de joueur n'est pas valide  pour la parite)";
+        type       = 2;
+        break;
+
+      case 406:
+        TOAST_TEXT = "Le coup n'est pas valide ! ";
+        type       = 3;
+        break;
+
+      case 503:
+        TOAST_TEXT = "Le serveur n'est pas accessible";
+        type       = 2;
+        break;
+
+      default:
+        TOAST_TEXT = "Le serveur n'est pas accessible";
+        type       = 2;
+        break;
+
+    }
+
+    displayToast(type);
+  }else{
+    ret  = true;
+  }
+
+  return ret;
+}
+
+function checkCodeFromConnect(){
+  var type = null;
+  var tmp  = TOAST_DISP_TIME;
+
+  if(CODE == 200){
+    TOAST_TEXT = 'Connexion au serveur réussi';
+    displayToast(0);
+
+    updateHeader();
+
+    if (GAME_MODE_HUM == false) {
+      THE_IA = new IA(PLAYER_ID, PLAYER_NUM);
+    }
+
+    ID_THREAD = setInterval(runThread(), 1000);
+
+    TOAST_TEXT       = "Vous êtes le joueur numéro " + PLAYER_NUM;
+    TOAST_DISP_TIME  = 2000;
+    type       = 1;
+
+  }else if (CODE == 401) {
+    TOAST_TEXT = "Une partie est déjà en cours. Vous ne pouvez pas la rejoindre !";
+    type       = 2;
+  }else if (CODE == 503) {
+    TOAST_TEXT = "Le serveur est indisponible, code http " + CODE;
+    type       = 2;
+  }else{
+    TOAST_TEXT = "Le serveur est indisponible, code http " + CODE;
+    type       = 2;
+  }
+
+  displayToast(type);
+  TOAST_DISP_TIME = tmp;
+}
+
+function checkCodeFromTurn(){
+  var ret  = false;
+  var type = null;
+
+
   switch(CODE){
     case 200:
       ret  = true;
-
-      TOAST_TEXT = "Le coup est validé";
-      type       = 1;
       break;
 
     case 401:
       TOAST_TEXT = "Le joueur n'est pas authorisé (le nom de joueur n'est pas valide  pour la parite)";
       type       = 2;
-      break;
-
-    case 406:
-      TOAST_TEXT = "Le cou n'est pas valide !";
-      type       = 3;
       break;
 
     case 503:
@@ -133,41 +199,14 @@ function checkCodeFromPlay(){
   return ret;
 }
 
-function checkCodeFromConnect(){
-  var type = null;
-
-  if(CODE == 200){
-    TOAST_TEXT = 'Connexion au serveur réussi';
-    displayToast(0);
-
-    updateHeader();
-
-    if (GAME_MODE_HUM == false) {
-      THE_IA = new IA(PLAYER_ID, PLAYER_NUM);
-    }
-
-    ID_THREAD = setInterval(runThread(), 1000);
-
-    TOAST_TEXT = "Vous êtes le joueur numéro " + PLAYER_NUM;
-    type       = 1;
-  }else if (CODE == 401) {
-    TOAST_TEXT = "Une partie est déjà en cours. Vous ne pouvez pas la rejoindre !";
-    type       = 2;
-  }else if (CODE == 503) {
-    TOAST_TEXT = "Le serveur est indisponible, code http " + CODE;
-    type       = 2;
-  }else{
-    TOAST_TEXT = "Le serveur est indisponible, code http " + CODE;
-    type       = 2;
-  }
-
-  displayToast(type);
-}
 
 
 // IA --------------------------------------------------------------------------
 function playIA(){
+  var turn = 0;
+
   THE_IA.setTab(TABLEAU);
+
   var toPlay = THE_IA.play(DERNIER_COUP_X, DERNIER_COUP_Y, TABLEAU, NB_TENAILLE_J1, NB_TENAILLE_J2, TURN_CPT);
 
   callServerPlay(toPlay[0], toPlay[1], function(val){
@@ -178,6 +217,8 @@ function playIA(){
       updatePoint(this);
       callServerTurn(function(ret)
       {
+              checkCodeFromTurn();
+
               updateHeader();
               updateTable();
       });
@@ -196,9 +237,15 @@ function runThread(){
     function(ret){
       console.log("callServerTurn code -> " + CODE)
 
+      checkCodeFromTurn();
+
       if(STATUS == 1){
+        TOAST_TEXT = "A vous de jouer !";
+        displayToast(1);
+
         updateHeader();
         updateTable();
+
         if (GAME_MODE_HUM == false) {
           playIA();
         }
@@ -258,11 +305,13 @@ function updateTable(){
         case 1:
           $(elem).css('opacity', '1');
           $(elem).css('fill', COLOR_PION_J1);
+          IS_FIRST_TURN = false;
           break;
 
         case 2:
           $(elem).css('opacity', '1');
           $(elem).css('fill', COLOR_PION_J2);
+          IS_FIRST_TURN = false;
           break;
 
         default:
@@ -272,6 +321,9 @@ function updateTable(){
     }
   }
 
+  if(IS_FIRST_TURN){
+    TURN_CPT = TURN_CPT + 1;
+  }
 
 }
 
@@ -291,7 +343,8 @@ function displayToast(type){
     text: TOAST_TEXT,
     showHideTransition: TOAST_TRANSITION,
     icon: TOAST_ICON[type],
-    hideAfter: TOAST_DISP_TIME
+    hideAfter: TOAST_DISP_TIME,
+    position: TOAST_POSITION
   });
 }
 
@@ -301,6 +354,17 @@ $(document).ready(function () {
 
   // Update de la partie en-tête à partir des variables global
   updateHeader();
+
+  $("#gamemode").bind("click", function(evt){
+    var gameMode = document.getElementById("gamemode").checked;
+    if(gameMode){
+      TOAST_TEXT = "Mode joueur humain activé";
+    }else{
+      TOAST_TEXT = "Mode joueur humain désactivé";
+    }
+
+    displayToast(1);
+  });
 
   // Test des informations fournies pour la co au SRV
   $(document).on("click", "#validate", function (evt) {
@@ -316,13 +380,6 @@ $(document).ready(function () {
       checkCodeFromConnect();
 
     });
-  });
-
-  $("#gamemode").bind("click", function(evt){
-    HUMAN_VS_IA = true;
-    $(this).disabled = true;
-
-    console.log("Human vs IA mode activated");
   });
 
   $(".point").bind("click", function (evt){
@@ -346,8 +403,10 @@ $(document).ready(function () {
 
             callServerTurn(function(ret)
             {
-                    updateHeader();
-                    updateTable();
+                checkCodeFromTurn();
+
+                updateHeader();
+                updateTable();
             });
           }
 
@@ -358,6 +417,4 @@ $(document).ready(function () {
     }
 
   });
-
-
 });
