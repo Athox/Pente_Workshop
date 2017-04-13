@@ -146,7 +146,7 @@ function checkCodeFromConnect(){
       THE_IA = new IA(PLAYER_ID, PLAYER_NUM);
     }
 
-    ID_THREAD = setInterval(runThread(), 1000);
+    ID_THREAD = setInterval(runThread, 1000);
 
     TOAST_TEXT       = "Vous êtes le joueur numéro " + PLAYER_NUM;
     TOAST_DISP_TIME  = 2000;
@@ -171,11 +171,8 @@ function checkCodeFromTurn(){
   var ret  = false;
   var type = null;
 
-
+if(CODE != 200){
   switch(CODE){
-    case 200:
-      ret  = true;
-      break;
 
     case 401:
       TOAST_TEXT = "Le joueur n'est pas authorisé (le nom de joueur n'est pas valide  pour la parite)";
@@ -193,8 +190,12 @@ function checkCodeFromTurn(){
       break;
 
   }
+    displayToast(type);
+}else{
+  ret = true;
+}
 
-  displayToast(type);
+
 
   return ret;
 }
@@ -224,7 +225,7 @@ function playIA(){
       });
     }
 
-    ID_THREAD = setInterval(runThread(), 1000);
+    ID_THREAD = setInterval(runThread, 1000);
   });
 }
 
@@ -232,8 +233,6 @@ function playIA(){
 
 // -----------------------------------------------------------------------------
 function runThread(){
-  clearInterval(ID_THREAD);
-  ID_THREAD = 0;
   callServerTurn(
     function(ret){
       console.log("callServerTurn code -> " + CODE)
@@ -250,11 +249,6 @@ function runThread(){
         if (GAME_MODE_HUM == false) {
           playIA();
         }
-      }else{
-        if(ID_THREAD == 0){
-          ID_THREAD = setInterval(runThread(), 1000);
-        }
-
       }
     });
 }
@@ -414,7 +408,7 @@ $(document).ready(function () {
             });
           }
 
-          ID_THREAD = setInterval(runThread(), 1000);
+          ID_THREAD = setInterval(runThread, 1000);
         });
 
       }
