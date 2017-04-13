@@ -245,3 +245,16 @@ button:hover {
   opacity: 0;
 }
 
+.popup p { 
+  
+font-size: 35px;
+
+}
+#rwin
+{
+  color: #43D1AF;
+}
+#rlose
+{
+  color: #d14343;
+}
