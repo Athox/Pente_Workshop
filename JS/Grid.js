@@ -134,6 +134,9 @@ pion.select("[x='"+x+"'][y='"+y+"']")
 }
 
 
+pion.select("[x='9'][y='9']")
+.style("opacity", "0.25")
+.style("fill", "red")
 
 grid.style("padding-left", "15px")
 grid.style("padding-top", "15px")
