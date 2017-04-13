@@ -32,3 +32,10 @@ var COLOR_PION_J1     = "#013A6B";
 var COLOR_PION_J2     = "#c1ad17";
 
 var THE_IA            = null;
+
+// Var for toast
+var TOAST_HEADING     = ['Réussite', 'Information', 'Erreur', 'Attention'];
+var TOAST_ICON        = ['sucess',   'info',        'error',  'warning'];
+var TOAST_TRANSITION  = 'fade';
+var TOAST_TEXT        = "";
+var TOAST_DISP_TIME   = 1000;

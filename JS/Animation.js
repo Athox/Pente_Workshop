@@ -85,8 +85,9 @@ function callServerPlay(x, y, cb_func){
            cb_func(ret);
 
          },
-         error: function (x, y, z) {
-            console.log(x.responseText + "  " + x.status);
+         error: function (data) {
+            CODE = data.status;
+            cb_func(ret);
          }
      });
 }
@@ -95,40 +96,49 @@ function callServerPlay(x, y, cb_func){
 // Check code from srv methods -------------------------------------------------
 function checkCodeFromPlay(){
   var ret  = false;
-  var cons = "";
+  var type = null;
 
   switch(CODE){
     case 200:
       ret  = true;
-      cons = "Play is validated";
+
+      TOAST_TEXT = "Le coup est validé";
+      type       = 1;
       break;
 
     case 401:
-      cons = "Player is unauhorized (player name not validate for the game)";
+      TOAST_TEXT = "Le joueur n'est pas authorisé (le nom de joueur n'est pas valide  pour la parite)";
+      type       = 2;
       break;
 
     case 406:
-      cons = "Play is not validated";
+      TOAST_TEXT = "Le cou n'est pas valide !";
+      type       = 3;
       break;
 
     case 503:
-      cons = "Server is unavailable";
+      TOAST_TEXT = "Le serveur n'est pas accessible";
+      type       = 2;
       break;
+
+    default:
+      TOAST_TEXT = "Le serveur n'est pas accessible";
+      type       = 2;
+      break;
+
   }
 
-  console.log(cons);
+  displayToast(type);
 
   return ret;
 }
 
 function checkCodeFromConnect(){
-  var type = "";
-  var text = "";
-  var icon = "";
+  var type = null;
 
-  if(CODE == "200"){
-
-    console.log("Player is connected to server");
+  if(CODE == 200){
+    TOAST_TEXT = 'Connexion au serveur réussi';
+    displayToast(0);
 
     updateHeader();
 
@@ -138,24 +148,20 @@ function checkCodeFromConnect(){
 
     ID_THREAD = setInterval(runThread(), 1000);
 
-
-    $.toast({
-      heading: 'Information',
-      text: 'Now you can add icons to generate different kinds of toasts',
-      showHideTransition: 'slide',
-      icon: 'info'
-    });
-
-  }else if (CODE == "401") {
-    console.log("Game is already running, can't join the server");
-
-  }else if (CODE == "503") {
-
+    TOAST_TEXT = "Vous êtes le joueur numéro " + PLAYER_NUM;
+    type       = 1;
+  }else if (CODE == 401) {
+    TOAST_TEXT = "Une partie est déjà en cours. Vous ne pouvez pas la rejoindre !";
+    type       = 2;
+  }else if (CODE == 503) {
+    TOAST_TEXT = "Le serveur est indisponible, code http " + CODE;
+    type       = 2;
   }else{
-    console.log("Server conncetion failled. Error -> " + CODE);
+    TOAST_TEXT = "Le serveur est indisponible, code http " + CODE;
+    type       = 2;
   }
 
-
+  displayToast(type);
 }
 
 
@@ -279,6 +285,15 @@ function updatePoint(elem){
   }
 }
 
+function displayToast(type){
+  $.toast({
+    heading: TOAST_HEADING[type],
+    text: TOAST_TEXT,
+    showHideTransition: TOAST_TRANSITION,
+    icon: TOAST_ICON[type],
+    hideAfter: TOAST_DISP_TIME
+  });
+}
 
 
 // -----------------------------------------------------------------------------
