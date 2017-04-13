@@ -8,7 +8,7 @@ function checkServer(srv, player, gameMode, cb_func){
     ret = "Veuillez renseigner un nom de joueur";
   }else{
     $.ajax({
-           url: "http://" + srv + "/connect/" + player,
+           url: srv + "/connect/" + player,
            data: "",
            contentType: "application/json; charset=utf-8",
            type: "GET",
@@ -35,35 +35,15 @@ function checkServer(srv, player, gameMode, cb_func){
   }
 }
 
-function runThread(){
-  clearInterval(ID_THREAD);
-  callServerTurn(
-    function(ret){
-      console.log("callServerTurn code -> " + CODE)
-
-      if(STATUS == 1){
-        updateHeader();
-        updateTable();
-        if (GAME_MODE_HUM == false) {
-          playIA();
-        }
-      }else{
-        ID_THREAD = setInterval(runThread(), 1000);
-      }
-    });
-}
-
 function callServerTurn(cb_func){
   $.ajax({
-         url: "http://" + ADRESSE_SRV + "/turn/" + PLAYER_ID,
+         url: ADRESSE_SRV + "/turn/" + PLAYER_ID,
          data: "",
          contentType: "application/json; charset=utf-8",
          type: "GET",
          success: function (data) {
 
-           STATUS = data.status;
-
-          // if(STATUS == 1 ){
+             STATUS = data.status;
 
              TABLEAU           = data.tableau;
 
@@ -81,10 +61,6 @@ function callServerTurn(cb_func){
 
              ret = "Your turn" + PLAYER_NAME;
 
-           /*}else{
-             ret = "Waiting your turn";
-           }*/
-
             cb_func(ret);
 
          },
@@ -96,7 +72,7 @@ function callServerTurn(cb_func){
 
 function callServerPlay(x, y, cb_func){
   $.ajax({
-         url: "http://" + ADRESSE_SRV + "/play/" + x + "/" + y + "/" + PLAYER_ID,
+         url: ADRESSE_SRV + "/play/" + x + "/" + y + "/" + PLAYER_ID,
          data: "",
          contentType: "application/json; charset=utf-8",
          type: "GET",
@@ -115,6 +91,8 @@ function callServerPlay(x, y, cb_func){
      });
 }
 
+
+// Check code from srv methods -------------------------------------------------
 function checkCodeFromPlay(){
   var ret  = false;
   var cons = "";
@@ -143,6 +121,43 @@ function checkCodeFromPlay(){
   return ret;
 }
 
+function checkCodeFromConnect(){
+  var type = "";
+  var text = "";
+  var icon = "";
+
+  if(CODE == "200"){
+
+    console.log("Player is connected to server");
+
+    updateHeader();
+
+    if (GAME_MODE_HUM == false) {
+      THE_IA = new IA(PLAYER_ID, PLAYER_NUM);
+    }
+
+    ID_THREAD = setInterval(runThread(), 1000);
+
+    /*$.toast({
+      heading: 'Information',
+      text: 'Now you can add icons to generate different kinds of toasts',
+      showHideTransition: 'slide',
+      icon: 'info'
+    });*/
+
+  }else if (CODE == "401") {
+    console.log("Game is already running, can't join the server");
+
+  }else if (CODE == "503") {
+
+  }else{
+    console.log("Server conncetion failled. Error -> " + CODE);
+  }
+
+
+}
+
+
 // IA --------------------------------------------------------------------------
 function playIA(){
   THE_IA.setTab(TABLEAU);
@@ -165,7 +180,27 @@ function playIA(){
   });
 }
 
+
+
 // -----------------------------------------------------------------------------
+function runThread(){
+  clearInterval(ID_THREAD);
+  callServerTurn(
+    function(ret){
+      console.log("callServerTurn code -> " + CODE)
+
+      if(STATUS == 1){
+        updateHeader();
+        updateTable();
+        if (GAME_MODE_HUM == false) {
+          playIA();
+        }
+      }else{
+        ID_THREAD = setInterval(runThread(), 1000);
+      }
+    });
+}
+
 function updateHeader(){
   if(PLAYER_NUM == 1 )
   {
@@ -214,16 +249,15 @@ function updateTable(){
 
       switch (val) {
         case 1:
-          //$(id).css('opacity', '1');
-          //$(id).css('fill', COLOR_PION_J1);
-
           $(elem).css('opacity', '1');
           $(elem).css('fill', COLOR_PION_J1);
           break;
+
         case 2:
-        $(elem).css('opacity', '1');
-        $(elem).css('fill', COLOR_PION_J2);
+          $(elem).css('opacity', '1');
+          $(elem).css('fill', COLOR_PION_J2);
           break;
+
         default:
           $(elem).css('opacity', '0');
           break;
@@ -244,44 +278,27 @@ function updatePoint(elem){
   }
 }
 
+
+
 // -----------------------------------------------------------------------------
 $(document).ready(function () {
 
+  // Update de la partie en-tête à partir des variables global
   updateHeader();
 
+  // Test des informations fournies pour la co au SRV
   $(document).on("click", "#validate", function (evt) {
-    var srv  = document.getElementById("srvadress").value;
-    var name = document.getElementById("playername").value;
+
+    // Récupération des informations données par l'utilisateur
+    var srv      = document.getElementById("srvadress").value;
+    var name     = document.getElementById("playername").value;
     var gameMode = document.getElementById("gamemode").checked;
 
+    // Call de la méthode de connection au SRV
     checkServer(srv, name, gameMode, function(val) {
-      /*
-      console.log("Adresse SRV -> " + ADRESSE_SRV);
-      console.log("Player name -> " + PLAYER_NAME);
-      console.log("Player ID   -> " + PLAYER_ID);
-      console.log("Player num  -> " + PLAYER_NUM);
 
-      console.log("checkServer code -> " + CODE);
-      */
+      checkCodeFromConnect();
 
-      if(CODE == "200"){
-        console.log("Player is connected to server");
-
-        updateHeader();
-
-        // TODO -> Start IA
-        if (GAME_MODE_HUM == false) {
-          THE_IA = new IA(PLAYER_ID, PLAYER_NUM);
-        }
-
-        ID_THREAD = setInterval(runThread(), 1000);
-
-      }else if (CODE == "401") {
-        console.log("Game is already running, can't join the server");
-
-      }else{
-        console.log("Server conncetion failled. Error -> " + CODE);
-      }
     });
   });
 
