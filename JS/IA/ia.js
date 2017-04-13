@@ -217,6 +217,61 @@ class IA {
         }
     }
   }
+  getInvertNeighborValueFromDir (l, c, distance, dir) {
+    l = parseInt(l);
+    c = parseInt(c);
+    distance = parseInt(distance);
+    switch (dir) {
+      case "right":
+        try {
+          return this.tab[l][c-distance];
+        } catch (e) {
+          return false;
+        }
+      case "left":
+        try {
+          return this.tab[l][c+distance];
+        } catch (e) {
+          return false;
+        }
+      case "up":
+        try {
+          return this.tab[l+distance][c];
+        } catch (e) {
+          return false;
+        }
+      case "down":
+        try {
+          return this.tab[l-distance][c];
+        } catch (e) {
+          return false;
+        }
+      case "upRight":
+        try {
+          return this.tab[l+distance][c-distance];
+        } catch (e) {
+          return false;
+        }
+      case "upLeft":
+        try {
+          return this.tab[l+distance][c+distance];
+        } catch (e) {
+          return false;
+        }
+      case "downRight":
+        try {
+          return this.tab[l-distance][c-distance];
+        } catch (e) {
+          return false;
+        }
+      case "downLeft":
+        try {
+          return this.tab[l-distance][c+distance];
+        } catch (e) {
+          return false;
+        }
+    }
+  }
   play(dernierCoupX, dernierCoupY, tableau, nbTenailleJ1, nbTenailleJ2, numTour) {
     if (dernierCoupX == null) {
       dernierCoupX = 0;
