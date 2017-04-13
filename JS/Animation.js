@@ -28,7 +28,7 @@ function checkServer(srv, player, gameMode, cb_func){
               cb_func(ret);
 
            },
-           error: function (x, y, z) {
+           error: function (data) {
              CODE = data.status;
              cb_func(ret);
            }
@@ -65,7 +65,7 @@ function callServerTurn(cb_func){
             cb_func(ret);
 
          },
-         error: function (x, y, z) {
+         error: function (data) {
            CODE = data.status;
            cb_func(ret);
          }
