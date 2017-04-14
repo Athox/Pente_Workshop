@@ -78,7 +78,7 @@ class IA {
         }
       }
     } catch (e) {
-      continue;
+
     }
     try {
       if (this.tab[dernierCoupX][dernierCoupY-1] != tableau[dernierCoupX][dernierCoupY-1]) {
@@ -89,7 +89,7 @@ class IA {
         }
       }
     } catch (e) {
-      continue;
+
     }
     try {
       if (this.tab[dernierCoupX-1][dernierCoupY] != tableau[dernierCoupX-1][dernierCoupY]) {
@@ -100,7 +100,7 @@ class IA {
         }
       }
     } catch (e) {
-      continue;
+
     }
     try {
       if (this.tab[dernierCoupX+1][dernierCoupY] != tableau[dernierCoupX+1][dernierCoupY]) {
@@ -111,7 +111,7 @@ class IA {
         }
       }
     } catch (e) {
-      continue;
+
     }
     try {
       if (this.tab[dernierCoupX-1][dernierCoupY+1] != tableau[dernierCoupX-1][dernierCoupY+1]) {
@@ -122,7 +122,7 @@ class IA {
         }
       }
     } catch (e) {
-      continue;
+
     }
     try {
       if (this.tab[dernierCoupX-1][dernierCoupY-1] != tableau[dernierCoupX-1][dernierCoupY-1]) {
@@ -133,7 +133,7 @@ class IA {
         }
       }
     } catch (e) {
-      continue;
+
     }
     try {
       if (this.tab[dernierCoupX+1][dernierCoupY-1] != tableau[dernierCoupX+1][dernierCoupY-1]) {
@@ -144,7 +144,7 @@ class IA {
         }
       }
     } catch (e) {
-      continue;
+
     }
     try {
       if (this.tab[dernierCoupX+1][dernierCoupY+1] != tableau[dernierCoupX+1][dernierCoupY+1]) {
@@ -155,7 +155,7 @@ class IA {
         }
       }
     } catch (e) {
-      continue;
+
     }
   }
   addPoint (dernierCoupX, dernierCoupY) {
